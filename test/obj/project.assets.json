@@ -5804,9 +5804,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sadeg\\source\\repos\\ShopAPI\\test\\ShopAPI.csproj",
-      "projectName": "ShopAPI",
-      "projectPath": "C:\\Users\\sadeg\\source\\repos\\ShopAPI\\test\\ShopAPI.csproj",
+      "projectUniqueName": "C:\\Users\\sadeg\\source\\repos\\ShopAPI\\test\\ShopAPISourceCode.csproj",
+      "projectName": "ShopAPISourceCode",
+      "projectPath": "C:\\Users\\sadeg\\source\\repos\\ShopAPI\\test\\ShopAPISourceCode.csproj",
       "packagesPath": "C:\\Users\\sadeg\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\sadeg\\source\\repos\\ShopAPI\\test\\obj\\",
       "projectStyle": "PackageReference",

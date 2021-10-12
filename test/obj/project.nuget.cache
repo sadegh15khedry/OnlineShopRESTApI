@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZjMoO5Z9bDslbpPFv8iW3cmBs7xkTSkc1vGJQXDZPyP/6eh3N2WftXsCcRAubBqTSKuNR03R39irR403gdyedA==",
+  "dgSpecHash": "MJxpFvCPNAtptNF6aqejA5z1cLztYKFDXMgYIz9pog9isDpq1vVdSJVgaC1yCXF7vgywuY8fDLxr8515nW84Qw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\sadeg\\source\\repos\\ShopAPI\\test\\ShopAPI.csproj",
+  "projectFilePath": "C:\\Users\\sadeg\\source\\repos\\ShopAPI\\test\\ShopAPISourceCode.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sadeg\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\sadeg\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
