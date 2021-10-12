@@ -4,7 +4,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>C:\Users\sadeg\Desktop\New folder</_PublishTargetUrl>
-    <History>True|2021-10-12T03:42:37.5144893Z;True|2021-10-12T07:08:39.7380380+03:30;</History>
+    <_PublishTargetUrl>C:\SADEGH\programming\publish\ShopApiPublished</_PublishTargetUrl>
+    <History>True|2021-10-12T09:14:04.9653327Z;True|2021-10-12T12:01:59.3959330+03:30;</History>
   </PropertyGroup>
 </Project>
