@@ -1,4 +1,5 @@
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\ShopAPISourceCode.exe
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\web.config
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\appsettings.Development.json
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\appsettings.json
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\ShopAPISourceCode.dll

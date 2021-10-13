@@ -54,3 +54,4 @@ C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\ShopAPISourceCode.ge
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\ShopAPISourceCode.csproj.AssemblyReference.cache
 C:\Users\sadeg\source\repos\ShopAPI\test\bin\Release\net5.0\AuthenticationPlugin.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\bin\Release\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\sadeg\source\repos\ShopAPI\test\bin\Release\net5.0\web.config
