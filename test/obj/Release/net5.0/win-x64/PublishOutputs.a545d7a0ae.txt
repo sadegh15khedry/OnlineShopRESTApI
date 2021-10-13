@@ -1,0 +1,6 @@
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\win-x64\PubTmp\Out\appsettings.Development.json
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\win-x64\PubTmp\Out\appsettings.json
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\win-x64\PubTmp\Out\ShopAPISourceCode.pdb
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\win-x64\PubTmp\Out\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\win-x64\PubTmp\Out\Microsoft.Data.SqlClient.SNI.pdb
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\win-x64\PubTmp\Out\ShopAPISourceCode.exe
