@@ -1,41 +1,44 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using test.Data;
 using test.Models;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
+using AuthenticationPlugin;
+using System.Security.Claims;
 
 namespace test.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
         private ShopDbContext _dbCotext;
-        //private IConfiguration _configuration;
-        //private readonly AuthService _auth;
+        private IConfiguration _configuration;
+        private readonly AuthService _auth;
 
 
-        public UsersController(ShopDbContext dbCotext/*, IConfiguration configuration*/)
+        public UsersController(ShopDbContext dbCotext, IConfiguration configuration)
         {
-            //_configuration = configuration;
-            //_auth = new AuthService(_configuration);
+            _configuration = configuration;
+            _auth = new AuthService(_configuration);
             _dbCotext = dbCotext;
         }
 
         // GET: api/<UsersController1>
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetUsers()
         {
             return Ok(_dbCotext.Users);
         }
 
         // GET api/<UsersController1>/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetUsers(int id)
         {
             var myUser = _dbCotext.Users.Find(id);
             if (myUser == null)
@@ -72,7 +75,7 @@ namespace test.Controllers
                 LastName = user.LastName,
                 UserName = user.UserName,
                 Email = user.Email,
-                //Password = SecurePasswordHasherHelper.Hash(user.Password),
+                Password = SecurePasswordHasherHelper.Hash(user.Password),
                 Phone = user.Phone,
                 Address = user.Address,
                 Role = "user"
@@ -83,7 +86,7 @@ namespace test.Controllers
 
 
         }
-        /*[HttpPost]
+        [HttpPost]
         public IActionResult Login([FromBody] User user)
         {
             var userEmail = _dbCotext.Users.FirstOrDefault(u => u.Email == user.Email);
@@ -114,7 +117,7 @@ namespace test.Controllers
                 user_role = userEmail.Role
             });
 
-        }*/
+        }
 
         // PUT api/<UsersController1>/5
         [HttpPut("{id}")]

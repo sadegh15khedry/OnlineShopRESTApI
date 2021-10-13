@@ -4,6 +4,8 @@ C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\appsettin
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\ShopAPISourceCode.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\ShopAPISourceCode.runtimeconfig.json
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\ShopAPISourceCode.pdb
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\AuthenticationPlugin.dll
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\Microsoft.Data.SqlClient.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\Microsoft.EntityFrameworkCore.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\Microsoft.EntityFrameworkCore.Abstractions.dll
@@ -16,7 +18,6 @@ C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\Microsoft
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\Microsoft.IdentityModel.Protocols.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\Microsoft.IdentityModel.Tokens.dll
-C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\Newtonsoft.Json.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\System.Configuration.ConfigurationManager.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\System.Diagnostics.DiagnosticSource.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\System.IdentityModel.Tokens.Jwt.dll

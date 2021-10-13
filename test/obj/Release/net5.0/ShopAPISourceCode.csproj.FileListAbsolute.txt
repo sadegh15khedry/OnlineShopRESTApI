@@ -21,7 +21,6 @@ C:\Users\sadeg\source\repos\ShopAPI\test\bin\Release\net5.0\Microsoft.IdentityMo
 C:\Users\sadeg\source\repos\ShopAPI\test\bin\Release\net5.0\Microsoft.IdentityModel.Protocols.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\bin\Release\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\bin\Release\net5.0\Microsoft.IdentityModel.Tokens.dll
-C:\Users\sadeg\source\repos\ShopAPI\test\bin\Release\net5.0\Newtonsoft.Json.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\bin\Release\net5.0\System.Configuration.ConfigurationManager.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\bin\Release\net5.0\System.Diagnostics.DiagnosticSource.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\bin\Release\net5.0\System.IdentityModel.Tokens.Jwt.dll
@@ -53,3 +52,5 @@ C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\ref\ShopAPISourceCod
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\ShopAPISourceCode.pdb
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\ShopAPISourceCode.genruntimeconfig.cache
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\ShopAPISourceCode.csproj.AssemblyReference.cache
+C:\Users\sadeg\source\repos\ShopAPI\test\bin\Release\net5.0\AuthenticationPlugin.dll
+C:\Users\sadeg\source\repos\ShopAPI\test\bin\Release\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
