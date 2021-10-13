@@ -31,13 +31,13 @@ namespace test.Controllers
             var currentPageNumber = pageNumber ?? 1;
             var currentSort = sort ?? "none";
 
-            if (sort == "expensive")
+            if (sort == "asc")
             {
                 var ourItems = _dbContext.Items.OrderBy(i => i.Price);
                 return Ok(ourItems.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
 
             }
-            else if (sort == "cheap")
+            else if (sort == "des")
             {
                 var ourItems = _dbContext.Items.OrderByDescending(i => i.Price);
                 return Ok(ourItems.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
@@ -55,7 +55,7 @@ namespace test.Controllers
             var myItem = _dbContext.Items.Find(id);
             if (myItem == null)
             {
-                return NotFound("no found");
+                return NotFound("not found");
             }
             else
             {
@@ -64,9 +64,9 @@ namespace test.Controllers
 
         }
 
-        //search in items
+        // GET api/<ItemsController>/search?title=
         [HttpGet("[action]")]
-        public IActionResult FindItems(string title)
+        public IActionResult Search(string title)
         {
             var items = from item in _dbContext.Items
                          where item.Title.StartsWith(title)
@@ -104,7 +104,7 @@ namespace test.Controllers
         }
 
         
-        // PUT api/<ItemsController>/5
+        // PUT api/items/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromForm] Item itemObj)
         {
@@ -142,7 +142,7 @@ namespace test.Controllers
             var myItem = _dbContext.Items.Find(id);
             if (myItem == null)
             {
-                return NotFound("no found");
+                return NotFound("not found");
             }
             else
             {

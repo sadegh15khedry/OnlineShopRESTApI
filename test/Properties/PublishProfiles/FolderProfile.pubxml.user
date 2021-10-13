@@ -5,6 +5,12 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>C:\SADEGH\programming\publish\ShopApiPublished</_PublishTargetUrl>
-    <History>True|2021-10-12T09:14:04.9653327Z;True|2021-10-12T12:01:59.3959330+03:30;</History>
+    <History>True|2021-10-13T06:33:42.2936970Z;True|2021-10-13T09:32:53.2478255+03:30;True|2021-10-13T09:21:32.6171254+03:30;True|2021-10-13T09:16:47.3802524+03:30;False|2021-10-13T09:15:28.7660472+03:30;True|2021-10-13T08:55:14.7768292+03:30;True|2021-10-12T12:44:04.9653327+03:30;True|2021-10-12T12:01:59.3959330+03:30;</History>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
   </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Data Source= .%3bInitial Catalog=ShopDb %3bUser ID=sadegh15khedry %3bPassword=1377s1377</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
 </Project>

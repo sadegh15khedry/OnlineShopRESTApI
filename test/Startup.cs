@@ -29,8 +29,8 @@ namespace test
 
             services.AddControllers();
             services.AddDbContext<ShopDbContext>(option => option.UseSqlServer(
-                Configuration.GetConnectionString("LocalConnection")
-                //Configuration.GetConnectionString("DefaultConnection")
+                //Configuration.GetConnectionString("LocalConnection")
+                Configuration.GetConnectionString("DefaultConnection")
                     ));
         }
 
