@@ -55,4 +55,3 @@ C:\Users\sadeg\source\repos\ShopAPI\test\obj\Debug\net5.0\ShopAPISourceCode.genr
 C:\Users\sadeg\source\repos\ShopAPI\test\bin\Debug\net5.0\AuthenticationPlugin.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\sadeg\source\repos\ShopAPI\test\bin\Debug\net5.0\web.config
-C:\Users\sadeg\source\repos\ShopAPI\test\obj\Debug\net5.0\ShopAPISourceCode.csproj.CopyComplete

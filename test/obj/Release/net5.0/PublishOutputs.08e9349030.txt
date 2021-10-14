@@ -1,4 +1,8 @@
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\ShopAPISourceCode.exe
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\wwwroot\img\31ac9bfb-e2c0-4c28-8a77-4350ce555ee9.jpg
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\wwwroot\img\7a87bed0-f155-4301-b4a7-e7d706772139.jpg
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\wwwroot\img\9bbda71d-821a-448e-8e40-fd4ebaa091bc.jpg
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\wwwroot\img\afca808a-215b-49c8-b8d0-44aa4e06c531.jpg
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\web.config
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\appsettings.Development.json
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\appsettings.json

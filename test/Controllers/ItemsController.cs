@@ -85,10 +85,6 @@ namespace test.Controllers
         [HttpPost]
         public IActionResult Post([FromForm] Item itemObj)
         {
-            //_dbContext.Items.Add(itemObj);
-            //_dbContext.SaveChanges();
-            //return StatusCode(201);
-
             var guid = Guid.NewGuid();
             var filePath = Path.Combine("wwwroot/img", guid + ".jpg");
             if (itemObj.Image != null)

@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AuthenticationPlugin;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
 using test.Data;
 using test.Models;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authorization;
-using AuthenticationPlugin;
-using System.Security.Claims;
 
 namespace test.Controllers
 {
@@ -51,9 +50,9 @@ namespace test.Controllers
             }
         }
 
-        // POST api/<UsersController1>
+        // POST api/<UsersController1>/register
         [HttpPost]
-        public IActionResult Register([FromBody] User user)
+        public IActionResult Register([FromForm] User user)
         {
 
             //ckecking email and username to see if already exists
@@ -77,6 +76,7 @@ namespace test.Controllers
                 Email = user.Email,
                 Password = SecurePasswordHasherHelper.Hash(user.Password),
                 Phone = user.Phone,
+                ImageUrl = "/img\\default_profile_pic.jpg",
                 Address = user.Address,
                 Role = "user"
             };
@@ -86,6 +86,8 @@ namespace test.Controllers
 
 
         }
+
+        // POST api/<UsersController1>/login
         [HttpPost]
         public IActionResult Login([FromBody] User user)
         {
@@ -119,7 +121,34 @@ namespace test.Controllers
 
         }
 
-        // PUT api/<UsersController1>/5
+        // PUT api/<UsersController1>/AddPhoto/5
+        [HttpPut("{id}")]
+        public IActionResult AddPhoto(int id, [FromForm] IFormFile photo)
+        {
+            var myUser = _dbCotext.Users.Find(id);
+            if (myUser == null)
+            {
+                return NotFound("not found");
+            }
+
+            else if (photo != null)
+            {
+                var guid = Guid.NewGuid();
+                var filePath = Path.Combine("wwwroot/img", guid + ".jpg");
+                var fileStream = new FileStream(filePath, FileMode.Create);
+                photo.CopyTo(fileStream);
+                myUser.ImageUrl = filePath.Remove(0, 7);
+                _dbCotext.SaveChanges();
+                return Ok("updated");
+            }
+            else 
+            {
+                return BadRequest("not a valid image");
+            }
+        }
+
+
+        // PUT api/<UsersController1>/update/5
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] User user)
         {
@@ -134,7 +163,7 @@ namespace test.Controllers
                 myUser.LastName = user.LastName;
                 myUser.UserName = user.UserName;
                 myUser.Address = user.Address;
-
+        
                 _dbCotext.SaveChanges();
                 return Ok("updated");
             }
