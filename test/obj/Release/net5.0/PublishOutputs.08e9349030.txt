@@ -1,8 +1,12 @@
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\ShopAPISourceCode.exe
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\wwwroot\img\31ac9bfb-e2c0-4c28-8a77-4350ce555ee9.jpg
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\wwwroot\img\7a87bed0-f155-4301-b4a7-e7d706772139.jpg
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\wwwroot\img\960220b2-bbb6-4e90-8353-fe4e47f8e2ef.jpg
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\wwwroot\img\9bbda71d-821a-448e-8e40-fd4ebaa091bc.jpg
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\wwwroot\img\9beed2ce-c9bd-4c81-8b20-4611f72a4f88.jpg
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\wwwroot\img\a69b449c-4b22-4c0c-8ffe-b294a1841ff0.jpg
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\wwwroot\img\afca808a-215b-49c8-b8d0-44aa4e06c531.jpg
+C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\wwwroot\img\default_profile_pic.jpg
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\web.config
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\appsettings.Development.json
 C:\Users\sadeg\source\repos\ShopAPI\test\obj\Release\net5.0\PubTmp\Out\appsettings.json

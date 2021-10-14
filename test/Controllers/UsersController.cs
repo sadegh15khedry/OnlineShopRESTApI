@@ -1,4 +1,5 @@
 ﻿using AuthenticationPlugin;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +13,7 @@ using test.Models;
 
 namespace test.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -30,14 +31,14 @@ namespace test.Controllers
 
         // GET: api/<UsersController1>
         [HttpGet]
-        public IActionResult GetUsers()
+        public IActionResult Get()
         {
             return Ok(_dbCotext.Users);
         }
 
         // GET api/<UsersController1>/5
         [HttpGet("{id}")]
-        public IActionResult GetUsers(int id)
+        public IActionResult Get(int id)
         {
             var myUser = _dbCotext.Users.Find(id);
             if (myUser == null)
@@ -51,7 +52,7 @@ namespace test.Controllers
         }
 
         // POST api/<UsersController1>/register
-        [HttpPost]
+        [HttpPost("[action]")]
         public IActionResult Register([FromForm] User user)
         {
 
@@ -88,8 +89,8 @@ namespace test.Controllers
         }
 
         // POST api/<UsersController1>/login
-        [HttpPost]
-        public IActionResult Login([FromBody] User user)
+        [HttpPost("[action]")]
+        public IActionResult Login([FromForm] User user)
         {
             var userEmail = _dbCotext.Users.FirstOrDefault(u => u.Email == user.Email);
             if (userEmail == null)
@@ -116,13 +117,13 @@ namespace test.Controllers
                 creation_Time = token.ValidFrom,
                 expiration_Time = token.ValidTo,
                 user_id = userEmail.Id,
-                user_role = userEmail.Role
+                user_role = userEmail.Role,
             });
 
         }
 
         // PUT api/<UsersController1>/AddPhoto/5
-        [HttpPut("{id}")]
+        [HttpPut("[action]/{id}")]
         public IActionResult AddPhoto(int id, [FromForm] IFormFile photo)
         {
             var myUser = _dbCotext.Users.Find(id);
@@ -141,9 +142,32 @@ namespace test.Controllers
                 _dbCotext.SaveChanges();
                 return Ok("updated");
             }
-            else 
+            else
             {
                 return BadRequest("not a valid image");
+            }
+        }
+
+
+        // PUT api/<UsersController1>/RemovePhoto/5
+        [HttpPut("[action]/{id}")]
+        public IActionResult RemovePhoto(int id)
+        {
+            var myUser = _dbCotext.Users.Find(id);
+            if (myUser == null)
+            {
+                return NotFound("not found");
+            }
+
+            else if (myUser != null)
+            {
+                myUser.ImageUrl = "/img\\default_profile_pic.jpg";
+                _dbCotext.SaveChanges();
+                return Ok("updated");
+            }
+            else
+            {
+                return BadRequest("not valid");
             }
         }
 
@@ -163,7 +187,7 @@ namespace test.Controllers
                 myUser.LastName = user.LastName;
                 myUser.UserName = user.UserName;
                 myUser.Address = user.Address;
-        
+
                 _dbCotext.SaveChanges();
                 return Ok("updated");
             }
@@ -172,7 +196,7 @@ namespace test.Controllers
 
         // DELETE api/<UsersController1>/5
         [HttpDelete("{id}")]
-        //[Authorize(Roles ="admin")]
+        [Authorize(Roles ="admin")]
         public IActionResult Delete(int id)
         {
             var myUser = _dbCotext.Users.Find(id);
