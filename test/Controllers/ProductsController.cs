@@ -14,17 +14,17 @@ namespace test.Controllers
     
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemsController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private ShopDbContext _dbContext;
 
-        public ItemsController(ShopDbContext dbContext)
+        public ProductsController(ShopDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         // GET: api/<ItemsController>
-        [HttpGet]
+        /*[HttpGet]
         public IActionResult Get(string? sort, int? pageNumber, int? pageSize)
         {
             var currentPageSize = pageSize ?? 20;
@@ -33,26 +33,26 @@ namespace test.Controllers
 
             if (sort == "asc")
             {
-                var ourItems = _dbContext.Items.OrderBy(i => i.Price);
+                var ourItems = _dbContext.Products.OrderBy(i => i.Price);
                 return Ok(ourItems.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
 
             }
             else if (sort == "des")
             {
-                var ourItems = _dbContext.Items.OrderByDescending(i => i.Price);
+                var ourItems = _dbContext.Products.OrderByDescending(i => i.Price);
                 return Ok(ourItems.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
             }
             else
             {
-                return Ok(_dbContext.Items.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
+                return Ok(_dbContext.Products.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
             }
-        }
+        }*/
 
         // GET api/<ItemsController>/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var myItem = _dbContext.Items.Find(id);
+            var myItem = _dbContext.Products.Find(id);
             if (myItem == null)
             {
                 return NotFound("not found");
@@ -68,7 +68,7 @@ namespace test.Controllers
         [HttpGet("[action]")]
         public IActionResult Search(string title)
         {
-            var items = from item in _dbContext.Items
+            var items = from item in _dbContext.Products
                          where item.Title.StartsWith(title)
                          select new
                          {
@@ -83,17 +83,17 @@ namespace test.Controllers
 
         // POST api/<ItemsController>
         [HttpPost]
-        public IActionResult Post([FromForm] Item itemObj)
+        public IActionResult Post([FromForm] Product itemObj)
         {
-            var guid = Guid.NewGuid();
+            /*var guid = Guid.NewGuid();
             var filePath = Path.Combine("wwwroot/img", guid + ".jpg");
             if (itemObj.Image != null)
             {
                 var fileStream = new FileStream(filePath, FileMode.Create);
                 itemObj.Image.CopyTo(fileStream);
             }
-            itemObj.ImageUrl = filePath.Remove(0, 7);
-            _dbContext.Items.Add(itemObj);
+            //itemObj.ImageUrl = filePath.Remove(0, 7);*/
+        _dbContext.Products.Add(itemObj);
             _dbContext.SaveChanges();
 
             return StatusCode(201, "item created");
@@ -102,9 +102,9 @@ namespace test.Controllers
         
         // PUT api/items/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromForm] Item itemObj)
+        public IActionResult Put(int id, [FromForm] Product itemObj)
         {
-            var myItem = _dbContext.Items.Find(id);
+            var myItem = _dbContext.Products.Find(id);
             if (myItem == null)
             {
                 return NotFound("not found");
@@ -113,13 +113,13 @@ namespace test.Controllers
             {
                 var guid = Guid.NewGuid();
                 var filePath = Path.Combine("wwwroot/img", guid + ".jpg");
-                if (itemObj.Image != null)
+                /*if (itemObj.Image != null)
                 {
                     var fileStream = new FileStream(filePath, FileMode.Create);
                     itemObj.Image.CopyTo(fileStream);
                     itemObj.ImageUrl = filePath.Remove(0, 7);
                     myItem.ImageUrl = itemObj.ImageUrl;
-                }
+                }*/
 
                 myItem.Description = itemObj.Description;
                 myItem.Title = itemObj.Title;
@@ -135,14 +135,14 @@ namespace test.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var myItem = _dbContext.Items.Find(id);
+            var myItem = _dbContext.Products.Find(id);
             if (myItem == null)
             {
                 return NotFound("not found");
             }
             else
             {
-                _dbContext.Items.Remove(myItem);
+                _dbContext.Products.Remove(myItem);
                 _dbContext.SaveChanges();
                 return Ok("deleted");
             }
