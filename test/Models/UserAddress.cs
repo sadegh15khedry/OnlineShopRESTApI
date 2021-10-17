@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using test.Models;
 
 namespace ShopAPISourceCode.Models
 {
@@ -21,5 +22,8 @@ namespace ShopAPISourceCode.Models
 
         public string Home { get; set; }
 
+        public double PostalCode { set; get; }
+
+        public User User { get; set; }
     }
 }

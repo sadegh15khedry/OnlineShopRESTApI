@@ -14,9 +14,7 @@ namespace ShopAPISourceCode.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey(nameof(User.Id))]
-        public int UserId { get; set; }
-
+        public User User { get; set; }
 
         public List<OrderItem> OrderItems { get; set; }
 

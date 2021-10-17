@@ -14,14 +14,14 @@ namespace ShopAPISourceCode.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey(nameof(Order.Id))]
-        public int OrderId { get; set; }
 
-        [ForeignKey(nameof(Product.Id))]
-        public int ProductId { get; set; }
+        public Order Order { get; set; }
 
-        [ForeignKey(nameof(ProductOption))]
-        public int ProductOptionId { get; set; }
+
+        public Product Product { get; set; }
+
+
+        public ProductOption ProductOption { get; set; }
 
         public int Quantity { get; set; }
 

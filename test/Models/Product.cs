@@ -26,19 +26,24 @@ namespace test.Models
         public string Analysis { get; set; }
 
 
-        public List<Categorie> Categories { get; set; }
+        public ICollection<Categorie> Categories { get; set; }
+
+        [InverseProperty(nameof(User.LikedProducts))]
+        public ICollection<User> UsersLiked { get; set; }
+
+        [InverseProperty(nameof(User.NoticeProduct))]
+        public ICollection<User> UsersNotice { get; set; }
+
+        public ICollection<ProductTag> ProductTag { get; set; }
+
+        public ICollection<Review> Reviews { get; set; }
+
+        public ICollection<ProductTag> ProductTags { get; set; }
+
+        public ICollection<ProductMeta> ProductMetas { get; set; }
 
 
-        public List<ProductTag> ProductTag { get; set; }
-
-
-        public List<Review> Reviews { get; set; }
-
-
-        public List<ProductMeta> ProductMetas { get; set; }
-
-
-        public List<ProductSpec> ProductSpecs { get; set; }
+        public ICollection<ProductSpec> ProductSpecs { get; set; }
 
     }
 }

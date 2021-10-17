@@ -78,7 +78,7 @@ namespace test.Controllers
                 Password = SecurePasswordHasherHelper.Hash(user.Password),
                 Phone = user.Phone,
                 ImageUrl = "/img\\default_profile_pic.jpg",
-                Address = user.Address,
+                //Address = user.Address,
                 Role = "user"
             };
             _dbCotext.Users.Add(userObj);
@@ -186,7 +186,7 @@ namespace test.Controllers
                 myUser.FirstName = user.FirstName;
                 myUser.LastName = user.LastName;
                 myUser.UserName = user.UserName;
-                myUser.Address = user.Address;
+                //myUser.Address = user.Address;
 
                 _dbCotext.SaveChanges();
                 return Ok("updated");

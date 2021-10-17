@@ -16,6 +16,8 @@ namespace test.Models
 
         public string LastName { set; get; }
 
+        public double SSN { set; get; }
+
         public string UserName { set; get; }
 
         public string Email { set; get; }
@@ -24,25 +26,18 @@ namespace test.Models
 
         public double Phone { set; get; }
 
-        public string Address { set; get; }
-
         public string Role { set; get; }
 
-        public double PostalCode { set; get; }
-
-        public double SSN { set; get; }
+        public ICollection<UserAddress> UserAddresses { get; set; }
 
 
-        public List<UserAddress> UserAddress { get; set; }
+        public ICollection<Product> LikedProducts { get; set; }
 
 
-        public List<Product> LikedProducts { get; set; }
+        public ICollection<Product> NoticeProduct { get; set; }
 
 
-        public List<Product> NoticeProduct { get; set; }
-
-
-        public List<Review> Reviews { get; set; }
+        public ICollection<Review> Reviews { get; set; }
 
         public string ImageUrl { get; set; }
 

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using test.Models;
 
 namespace ShopAPISourceCode.Models
 {
@@ -12,6 +13,8 @@ namespace ShopAPISourceCode.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        public ICollection<Product> Products { get; set; }
 
         public string Title { get; set; }
 

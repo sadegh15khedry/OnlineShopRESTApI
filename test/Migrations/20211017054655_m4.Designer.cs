@@ -10,8 +10,8 @@ using test.Data;
 namespace ShopAPISourceCode.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20211016114336_initiDb")]
-    partial class initiDb
+    [Migration("20211017054655_m4")]
+    partial class m4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,66 @@ namespace ShopAPISourceCode.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CategorieProduct", b =>
+                {
+                    b.Property<int>("CategoriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoriesId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CategorieProduct");
+                });
+
+            modelBuilder.Entity("ProductProductTag", b =>
+                {
+                    b.Property<int>("ProductTagId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductTagId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("ProductProductTag");
+                });
+
+            modelBuilder.Entity("ProductUser", b =>
+                {
+                    b.Property<int>("LikedProductsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersLikedId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LikedProductsId", "UsersLikedId");
+
+                    b.HasIndex("UsersLikedId");
+
+                    b.ToTable("ProductUser");
+                });
+
+            modelBuilder.Entity("ProductUser1", b =>
+                {
+                    b.Property<int>("NoticeProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersNoticeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("NoticeProductId", "UsersNoticeId");
+
+                    b.HasIndex("UsersNoticeId");
+
+                    b.ToTable("ProductUser1");
+                });
 
             modelBuilder.Entity("ShopAPISourceCode.Models.Cart", b =>
                 {
@@ -37,10 +97,12 @@ namespace ShopAPISourceCode.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Carts");
                 });
@@ -52,16 +114,16 @@ namespace ShopAPISourceCode.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CartId")
+                    b.Property<int?>("CartId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductOptionId")
+                    b.Property<int?>("ProductOptionId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -76,6 +138,10 @@ namespace ShopAPISourceCode.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductOptionId");
 
                     b.ToTable("CartItems");
                 });
@@ -96,17 +162,12 @@ namespace ShopAPISourceCode.Migrations
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ParentId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Categories");
                 });
@@ -136,10 +197,12 @@ namespace ShopAPISourceCode.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -154,13 +217,13 @@ namespace ShopAPISourceCode.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductOptionId")
+                    b.Property<int?>("ProductOptionId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -176,6 +239,10 @@ namespace ShopAPISourceCode.Migrations
 
                     b.HasIndex("OrderId");
 
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductOptionId");
+
                     b.ToTable("OrderItems");
                 });
 
@@ -189,13 +256,17 @@ namespace ShopAPISourceCode.Migrations
                     b.Property<string>("ImagesUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductOptionId")
+                    b.Property<int?>("ProductOptionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductOptionId");
 
                     b.ToTable("ProductImages");
                 });
@@ -213,7 +284,7 @@ namespace ShopAPISourceCode.Migrations
                     b.Property<string>("Key")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -242,7 +313,7 @@ namespace ShopAPISourceCode.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<double>("Quantity")
@@ -252,6 +323,8 @@ namespace ShopAPISourceCode.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductOptions");
                 });
@@ -292,9 +365,6 @@ namespace ShopAPISourceCode.Migrations
                     b.Property<string>("MetaTitle")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(max)");
 
@@ -302,8 +372,6 @@ namespace ShopAPISourceCode.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductTag");
                 });
@@ -315,7 +383,7 @@ namespace ShopAPISourceCode.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Rating")
@@ -330,7 +398,7 @@ namespace ShopAPISourceCode.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -355,7 +423,7 @@ namespace ShopAPISourceCode.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<double>("PaidPrice")
@@ -370,10 +438,14 @@ namespace ShopAPISourceCode.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Transactions");
                 });
@@ -393,6 +465,9 @@ namespace ShopAPISourceCode.Migrations
 
                     b.Property<string>("Home")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("PostalCode")
+                        .HasColumnType("float");
 
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
@@ -428,17 +503,7 @@ namespace ShopAPISourceCode.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Products");
                 });
@@ -449,9 +514,6 @@ namespace ShopAPISourceCode.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -471,9 +533,6 @@ namespace ShopAPISourceCode.Migrations
                     b.Property<double>("Phone")
                         .HasColumnType("float");
 
-                    b.Property<double>("PostalCode")
-                        .HasColumnType("float");
-
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
 
@@ -488,13 +547,94 @@ namespace ShopAPISourceCode.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ShopAPISourceCode.Models.CartItem", b =>
+            modelBuilder.Entity("CategorieProduct", b =>
                 {
-                    b.HasOne("ShopAPISourceCode.Models.Cart", null)
-                        .WithMany("CartItems")
-                        .HasForeignKey("CartId")
+                    b.HasOne("ShopAPISourceCode.Models.Categorie", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("test.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProductProductTag", b =>
+                {
+                    b.HasOne("ShopAPISourceCode.Models.ProductTag", null)
+                        .WithMany()
+                        .HasForeignKey("ProductTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("test.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProductUser", b =>
+                {
+                    b.HasOne("test.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("LikedProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("test.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersLikedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProductUser1", b =>
+                {
+                    b.HasOne("test.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("NoticeProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("test.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersNoticeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ShopAPISourceCode.Models.Cart", b =>
+                {
+                    b.HasOne("test.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShopAPISourceCode.Models.CartItem", b =>
+                {
+                    b.HasOne("ShopAPISourceCode.Models.Cart", "Cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId");
+
+                    b.HasOne("test.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("ShopAPISourceCode.Models.ProductOption", "ProductOption")
+                        .WithMany()
+                        .HasForeignKey("ProductOptionId");
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductOption");
                 });
 
             modelBuilder.Entity("ShopAPISourceCode.Models.Categorie", b =>
@@ -503,29 +643,70 @@ namespace ShopAPISourceCode.Migrations
                         .WithMany()
                         .HasForeignKey("ParentId");
 
-                    b.HasOne("test.Models.Product", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("ProductId");
-
                     b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("ShopAPISourceCode.Models.Order", b =>
+                {
+                    b.HasOne("test.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShopAPISourceCode.Models.OrderItem", b =>
                 {
-                    b.HasOne("ShopAPISourceCode.Models.Order", null)
+                    b.HasOne("ShopAPISourceCode.Models.Order", "Order")
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("test.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("ShopAPISourceCode.Models.ProductOption", "ProductOption")
+                        .WithMany()
+                        .HasForeignKey("ProductOptionId");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductOption");
+                });
+
+            modelBuilder.Entity("ShopAPISourceCode.Models.ProductImage", b =>
+                {
+                    b.HasOne("test.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("ShopAPISourceCode.Models.ProductOption", "ProductOption")
+                        .WithMany()
+                        .HasForeignKey("ProductOptionId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductOption");
                 });
 
             modelBuilder.Entity("ShopAPISourceCode.Models.ProductMeta", b =>
                 {
-                    b.HasOne("test.Models.Product", null)
+                    b.HasOne("test.Models.Product", "Product")
                         .WithMany("ProductMetas")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ShopAPISourceCode.Models.ProductOption", b =>
+                {
+                    b.HasOne("test.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ShopAPISourceCode.Models.ProductSpec", b =>
@@ -537,44 +718,43 @@ namespace ShopAPISourceCode.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ShopAPISourceCode.Models.ProductTag", b =>
-                {
-                    b.HasOne("test.Models.Product", null)
-                        .WithMany("ProductTag")
-                        .HasForeignKey("ProductId");
-                });
-
             modelBuilder.Entity("ShopAPISourceCode.Models.Review", b =>
                 {
-                    b.HasOne("test.Models.Product", null)
+                    b.HasOne("test.Models.Product", "Product")
                         .WithMany("Reviews")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
-                    b.HasOne("test.Models.User", null)
+                    b.HasOne("test.Models.User", "User")
                         .WithMany("Reviews")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShopAPISourceCode.Models.Transaction", b =>
+                {
+                    b.HasOne("ShopAPISourceCode.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("test.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShopAPISourceCode.Models.UserAddress", b =>
                 {
-                    b.HasOne("test.Models.User", null)
-                        .WithMany("UserAddress")
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("test.Models.Product", b =>
-                {
-                    b.HasOne("test.Models.User", null)
-                        .WithMany("LikedProducts")
+                    b.HasOne("test.Models.User", "User")
+                        .WithMany("UserAddresses")
                         .HasForeignKey("UserId");
 
-                    b.HasOne("test.Models.User", null)
-                        .WithMany("NoticeProduct")
-                        .HasForeignKey("UserId1");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShopAPISourceCode.Models.Cart", b =>
@@ -589,26 +769,18 @@ namespace ShopAPISourceCode.Migrations
 
             modelBuilder.Entity("test.Models.Product", b =>
                 {
-                    b.Navigation("Categories");
-
                     b.Navigation("ProductMetas");
 
                     b.Navigation("ProductSpecs");
-
-                    b.Navigation("ProductTag");
 
                     b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("test.Models.User", b =>
                 {
-                    b.Navigation("LikedProducts");
-
-                    b.Navigation("NoticeProduct");
-
                     b.Navigation("Reviews");
 
-                    b.Navigation("UserAddress");
+                    b.Navigation("UserAddresses");
                 });
 #pragma warning restore 612, 618
         }

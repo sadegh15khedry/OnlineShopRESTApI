@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using test.Models;
 
 namespace ShopAPISourceCode.Models
 {
@@ -22,7 +23,11 @@ namespace ShopAPISourceCode.Models
 
         public string ImageUrl { get; set; }
 
+        public ICollection<Product> Product { get; set; }
+
         [NotMapped]
         public IFormFile Image { get; set; }
+
+
     }
 }
