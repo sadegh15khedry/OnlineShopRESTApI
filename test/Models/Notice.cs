@@ -8,23 +8,17 @@ using test.Models;
 
 namespace ShopAPISourceCode.Models
 {
-    public class Cart
+    public class Notice
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int CartId { get; set; }
+        public int NoticeId { set; get; }
 
+        public User NoticeUser { get; set; }
 
-        public List<CartItem> CartItems { get; set; }
+        public Product NoticeProduct { get; set; }
 
-        
-        public User CartUser { get; set; }
-
-        public DateTime CartCreatedAt { get; set; }
-        
-        public DateTime CartUpdatedAt { get; set; }
-
-        public string CartStatus { get; set; }
-
+        public DateTime NoticeDateTimeAdded { get; set; }
+    
     }
 }

@@ -12,25 +12,25 @@ namespace ShopAPISourceCode.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int TransactionId { get; set; }
 
 
-        public Order Order { get; set; }
+        public Order TransactionOrder { get; set; }
 
 
-        public User User { get; set; }
+        public User TransactionUser { get; set; }
 
-        public int Type { get; set; }
+        public int TransactionType { get; set; }
 
-        public string Status { get; set; }
+        public string TransactionStatus { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime TransactionCreatedAt { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime TransactionUpdatedAt { get; set; }
 
-        public string Context { get; set; }
+        public string TransactionContext { get; set; }
 
-        public double PaidPrice { get; set; }
+        public double TransactionPaidPrice { get; set; }
 
     }
 }

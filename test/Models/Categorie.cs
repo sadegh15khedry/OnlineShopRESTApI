@@ -13,20 +13,22 @@ namespace ShopAPISourceCode.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { set; get; }
+        public int CategorieId { set; get; }
 
-        public string Title { set; get; }
+        public string CategorieTitle { set; get; }
 
-        public string MetaTitle { set; get; }
+        public string CategorieMetaTitle { set; get; }
 
-        public Categorie Parent { set; get; }
+        [ForeignKey(nameof(Categorie))]
+        public Categorie CategorieParent { set; get; }
 
-        public string ImageUrl { get; set; }
+        public string CategorieImageUrl { get; set; }
 
-        public ICollection<Product> Product { get; set; }
+
+        public ICollection<Product> CategorieProducts { get; set; }
 
         [NotMapped]
-        public IFormFile Image { get; set; }
+        public IFormFile CategorieImage { get; set; }
 
 
     }

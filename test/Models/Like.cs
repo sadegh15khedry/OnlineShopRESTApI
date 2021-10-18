@@ -8,17 +8,16 @@ using test.Models;
 
 namespace ShopAPISourceCode.Models
 {
-    public class ProductSpec
+    public class Like
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int LikeId { set; get; }
+        //[Column("LikeUserId")]
+        public virtual User LikeUser { get; set; }
+ 
+        public virtual Product LikeProduct { get; set; }
 
-        [ForeignKey(nameof(Product.Id))]
-        public int ProductId { get; set; }
-
-        public string Key { get; set; }
-
-        public string Vlaue { get; set; }
+        public DateTime LikeDateTimeAdded { get; set; }
     }
 }

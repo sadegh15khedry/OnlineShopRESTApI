@@ -8,22 +8,18 @@ using test.Models;
 
 namespace ShopAPISourceCode.Models
 {
-    public class UserAddress
+    public class Meta
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public string State { get; set; }
 
-        public string County { get; set; }
+        public Product Product { get; set; }
 
-        public string City { get; set; }
+        public string Key { get; set; }
 
-        public string Home { get; set; }
+        public string Context { get; set; }
 
-        public double PostalCode { set; get; }
-
-        public User User { get; set; }
     }
 }

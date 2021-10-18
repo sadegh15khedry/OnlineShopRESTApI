@@ -12,20 +12,19 @@ namespace ShopAPISourceCode.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { set; get; }
+        public int ReviewId { set; get; }
         
-        public string Title { set; get; }
+        public string ReviewTitle { set; get; }
 
-        public int Rating { get; set; }//zero to five
+        public int ReviewRating { get; set; }//zero to five
 
-        public int Status { get; set; }
+        public int ReviewStatus { get; set; }
 
         public string ReviewContext { set; get; }
         
+        public  User ReviewUser { set; get; }
 
-        public  User User { set; get; }
-
-        public Product Product { set; get; }
+        public Product ReviewProduct { set; get; }
 
     }
 }

@@ -57,9 +57,9 @@ namespace test.Controllers
         {
 
             //ckecking email and username to see if already exists
-            var userWithSameEmail = _dbCotext.Users.Where(u => u.Email == user.Email)
+            var userWithSameEmail = _dbCotext.Users.Where(u => u.UserEmail == user.UserEmail)
                 .SingleOrDefault();
-            var userWithSameUsrname = _dbCotext.Users.Where(u => u.UserName == user.UserName)
+            var userWithSameUsrname = _dbCotext.Users.Where(u => u.UserUserName == user.UserUserName)
                .SingleOrDefault();
             if (userWithSameEmail != null)
             {
@@ -71,15 +71,15 @@ namespace test.Controllers
             }
             var userObj = new User
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                UserName = user.UserName,
-                Email = user.Email,
-                Password = SecurePasswordHasherHelper.Hash(user.Password),
-                Phone = user.Phone,
+                UserFirstName = user.UserFirstName,
+                UserLastName = user.UserLastName,
+                UserUserName = user.UserUserName,
+                UserEmail = user.UserEmail,
+                UserPassword = SecurePasswordHasherHelper.Hash(user.UserPassword),
+                UserPhone = user.UserPhone,
                 ImageUrl = "/img\\default_profile_pic.jpg",
                 //Address = user.Address,
-                Role = "user"
+                UserRole = "user"
             };
             _dbCotext.Users.Add(userObj);
             _dbCotext.SaveChanges();
@@ -92,20 +92,20 @@ namespace test.Controllers
         [HttpPost("[action]")]
         public IActionResult Login([FromForm] User user)
         {
-            var userEmail = _dbCotext.Users.FirstOrDefault(u => u.Email == user.Email);
+            var userEmail = _dbCotext.Users.FirstOrDefault(u => u.UserEmail == user.UserEmail);
             if (userEmail == null)
             {
                 return NotFound();
             }
-            if (!SecurePasswordHasherHelper.Verify(user.Password, userEmail.Password))
+            if (!SecurePasswordHasherHelper.Verify(user.UserPassword, userEmail.UserPassword))
             {
                 return Unauthorized();
             }
             var claims = new[]
 {
-            new Claim(JwtRegisteredClaimNames.Email, userEmail.Email),
-            new Claim(ClaimTypes.Email, userEmail.Email),
-            new Claim(ClaimTypes.Role, userEmail.Role),
+            new Claim(JwtRegisteredClaimNames.Email, userEmail.UserEmail),
+            new Claim(ClaimTypes.Email, userEmail.UserEmail),
+            new Claim(ClaimTypes.Role, userEmail.UserRole),
             };
 
             var token = _auth.GenerateAccessToken(claims);
@@ -116,8 +116,8 @@ namespace test.Controllers
                 token_type = token.TokenType,
                 creation_Time = token.ValidFrom,
                 expiration_Time = token.ValidTo,
-                user_id = userEmail.Id,
-                user_role = userEmail.Role,
+                user_id = userEmail.UserId,
+                user_role = userEmail.UserRole,
             });
 
         }
@@ -183,9 +183,9 @@ namespace test.Controllers
             }
             else
             {
-                myUser.FirstName = user.FirstName;
-                myUser.LastName = user.LastName;
-                myUser.UserName = user.UserName;
+                myUser.UserFirstName = user.UserFirstName;
+                myUser.UserLastName = user.UserLastName;
+                myUser.UserUserName = user.UserUserName;
                 //myUser.Address = user.Address;
 
                 _dbCotext.SaveChanges();

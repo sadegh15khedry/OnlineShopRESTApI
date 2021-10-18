@@ -7,7 +7,7 @@ using test.Models;
 
 namespace ShopAPISourceCode.Models
 {
-    public class ProductOption
+    public class Option
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

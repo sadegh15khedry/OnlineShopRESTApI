@@ -10,31 +10,32 @@ namespace test.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { set; get; }
+        public int UserId { set; get; }
 
-        public string FirstName { set; get; }
+        public string UserFirstName { set; get; }
 
-        public string LastName { set; get; }
+        public string UserLastName { set; get; }
 
-        public double SSN { set; get; }
+        public double UserSSN { set; get; }
 
-        public string UserName { set; get; }
+        public string UserUserName { set; get; }
 
-        public string Email { set; get; }
+        public string UserEmail { set; get; }
 
-        public string Password { set; get; }
+        public string UserPassword { set; get; }
 
-        public double Phone { set; get; }
+        public double UserPhone { set; get; }
 
-        public string Role { set; get; }
+        public string UserRole { set; get; }
 
-        public ICollection<UserAddress> UserAddresses { get; set; }
-
-
-        public ICollection<Product> LikedProducts { get; set; }
+        public ICollection<Address> UserAddresses { get; set; }
 
 
-        public ICollection<Product> NoticeProduct { get; set; }
+        //[ForeignKey(nameof(Product.ProductId))]
+        public virtual ICollection<Like> UserProductsLiked { get; set; }
+
+
+        //public ICollection<Product> NoticeProduct { get; set; }
 
 
         public ICollection<Review> Reviews { get; set; }

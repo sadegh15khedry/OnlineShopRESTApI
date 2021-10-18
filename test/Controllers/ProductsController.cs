@@ -68,14 +68,14 @@ namespace test.Controllers
         [HttpGet("[action]")]
         public IActionResult Search(string title)
         {
-            var items = from item in _dbContext.Products
-                         where item.Title.StartsWith(title)
+            var products = from Product in _dbContext.Products
+                         where Product.ProductTitle.StartsWith(title)
                          select new
                          {
-                             Id = item.Id,
-                             Title = item.Title
+                             Id = Product.ProductId,
+                             Title = Product.ProductTitle
                          };
-            return Ok(items);
+            return Ok(products);
         }
 
 
@@ -104,8 +104,8 @@ namespace test.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromForm] Product itemObj)
         {
-            var myItem = _dbContext.Products.Find(id);
-            if (myItem == null)
+            var myProduct = _dbContext.Products.Find(id);
+            if (myProduct == null)
             {
                 return NotFound("not found");
             }
@@ -118,12 +118,12 @@ namespace test.Controllers
                     var fileStream = new FileStream(filePath, FileMode.Create);
                     itemObj.Image.CopyTo(fileStream);
                     itemObj.ImageUrl = filePath.Remove(0, 7);
-                    myItem.ImageUrl = itemObj.ImageUrl;
+                    myProduct.ImageUrl = itemObj.ImageUrl;
                 }*/
 
-                myItem.Description = itemObj.Description;
-                myItem.Title = itemObj.Title;
-                myItem.Brand = itemObj.Brand;
+                myProduct.ProductDescription = itemObj.ProductDescription;
+                myProduct.ProductTitle = itemObj.ProductTitle;
+                myProduct.ProductBrand = itemObj.ProductBrand;
 
                 _dbContext.SaveChanges();
                 return Ok("updated");

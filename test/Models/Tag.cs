@@ -8,21 +8,21 @@ using test.Models;
 
 namespace ShopAPISourceCode.Models
 {
-    public class ProductTag
+    public class Tag
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int TagId { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public Product TagProducts { get; set; }
 
-        public string Title { get; set; }
+        public string TagTitle { get; set; }
 
-        public string MetaTitle { get; set; }
+        public string TagMetaTitle { get; set; }
 
-        public string Slug { get; set; }
+        public string TagSlug { get; set; }
 
-        public string Context { get; set; }
+        public string TagContext { get; set; }
 
 
     }

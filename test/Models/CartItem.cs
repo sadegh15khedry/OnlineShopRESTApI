@@ -12,22 +12,22 @@ namespace ShopAPISourceCode.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int CartItemId { get; set; }
 
 
-        public Cart Cart { get; set; }
+        public Cart CartItemCart { get; set; }
 
 
-        public Product Product { get; set; }
+        public Product CartItemProduct { get; set; }
 
-        public ProductOption ProductOption { get; set; }
+        public Option CartItemProductOption { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CartItemCreatedAt { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime CartItemUpdatedAt { get; set; }
 
-        public int Quantity { get; set; }
+        public int CartItemQuantity { get; set; }
 
-        public string Status { get; set; }
+        public string CartItemStatus { get; set; }
     }
 }

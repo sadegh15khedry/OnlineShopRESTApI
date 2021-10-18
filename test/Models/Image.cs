@@ -9,21 +9,21 @@ using test.Models;
 
 namespace ShopAPISourceCode.Models
 {
-    public class ProductImage
+    public class Image
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int ImageId { get; set; }
 
 
-        public Product Product { get; set; }
+        public Product ImageProduct { get; set; }
 
 
-        public ProductOption ProductOption { get; set; }
+        public Option ImageProductOption { get; set; }
 
         public string ImagesUrl { get; set; }
 
         [NotMapped]
-        public IFormFile Image { get; set; }
+        public IFormFile ImageImage { get; set; }
     }
 }

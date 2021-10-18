@@ -12,23 +12,23 @@ namespace ShopAPISourceCode.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int OrderItemId { get; set; }
 
 
-        public Order Order { get; set; }
+        public Order OrderItemOrder { get; set; }
 
 
-        public Product Product { get; set; }
+        public Product OrderItemProduct { get; set; }
 
 
-        public ProductOption ProductOption { get; set; }
+        public Option OrderItemProductOption { get; set; }
 
-        public int Quantity { get; set; }
+        public int OrderItemQuantity { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime OrderItemCreatedAt { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime OrderItemUpdatedAt { get; set; }
 
-        public string Status { get; set; }
+        public string OrderItemStatus { get; set; }
     }
 }

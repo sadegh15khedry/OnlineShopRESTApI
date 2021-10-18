@@ -8,18 +8,17 @@ using test.Models;
 
 namespace ShopAPISourceCode.Models
 {
-    public class ProductMeta
+    public class Spec
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int SpecId { get; set; }
 
+        [ForeignKey(nameof(Product.ProductId))]
+        public int SpecProductId { get; set; }
 
-        public Product Product { get; set; }
+        public string SpecKey { get; set; }
 
-        public string Key { get; set; }
-
-        public string Context { get; set; }
-
+        public string SpecVlaue { get; set; }
     }
 }
