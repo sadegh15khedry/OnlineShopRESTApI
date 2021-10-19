@@ -80,22 +80,22 @@ namespace test.Controllers
 
         // POST api/<UsersController1>/login
         [HttpPost("[action]")]
-        public IActionResult Login([FromForm] User user)
+        public IActionResult Login([FromForm] string userEmail, [FromForm] string userPassword)
         {
-            var userEmail = _dbCotext.Users.FirstOrDefault(u => u.UserEmail == user.UserEmail);
-            if (userEmail == null)
+            var myUser = _dbCotext.Users.FirstOrDefault(u => u.UserEmail == userEmail);
+            if (myUser == null)
             {
                 return NotFound();
             }
-            if (!SecurePasswordHasherHelper.Verify(user.UserPassword, userEmail.UserPassword))
+            if (!SecurePasswordHasherHelper.Verify(userPassword, myUser.UserPassword))
             {
                 return Unauthorized();
             }
             var claims = new[]
 {
-            new Claim(JwtRegisteredClaimNames.Email, userEmail.UserEmail),
-            new Claim(ClaimTypes.Email, userEmail.UserEmail),
-            new Claim(ClaimTypes.Role, userEmail.UserRole),
+            new Claim(JwtRegisteredClaimNames.Email, myUser.UserEmail),
+            new Claim(ClaimTypes.Email, myUser.UserEmail),
+            new Claim(ClaimTypes.Role, myUser.UserRole),
             };
 
             var token = _auth.GenerateAccessToken(claims);
@@ -106,8 +106,8 @@ namespace test.Controllers
                 token_type = token.TokenType,
                 creation_Time = token.ValidFrom,
                 expiration_Time = token.ValidTo,
-                user_id = userEmail.UserId,
-                user_role = userEmail.UserRole,
+                user_id = myUser.UserId,
+                user_role = myUser.UserRole,
             });
 
         }
@@ -164,30 +164,30 @@ namespace test.Controllers
 
         // PUT api/<UsersController1>/update/5
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromForm] User user)
+        public IActionResult Update(int id, [FromForm] string? userFirstName, [FromForm] string? userLastName,
+            [FromForm] string? userSSN)
         {
             var myUser = _dbCotext.Users.Find(id);
             if (myUser == null)
             {
                 return NotFound("no found");
             }
-            else
+
+            if (userFirstName != null)
             {
-                if (user.UserFirstName != null)
-                {
-                    myUser.UserFirstName = user.UserFirstName;
-                }
-                if (user.UserLastName != null)
-                {
-                    myUser.UserLastName = user.UserLastName;
-                }
-                if (user.UserSSN != null)
-                {
-                    myUser.UserSSN = user.UserSSN;
-                }
-                _dbCotext.SaveChanges();
-                return Ok("updated");
+                myUser.UserFirstName = userFirstName;
             }
+            if (userLastName != null)
+            {
+                myUser.UserLastName = userLastName;
+            }
+            if (userSSN != null)
+            {
+                myUser.UserSSN = Int16.Parse(userSSN);
+            }
+            _dbCotext.SaveChanges();
+            return Ok("updated");
+
 
         }
 
