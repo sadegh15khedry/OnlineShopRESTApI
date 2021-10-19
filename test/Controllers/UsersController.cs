@@ -55,29 +55,20 @@ namespace test.Controllers
         [HttpPost("[action]")]
         public IActionResult Register([FromForm] User user)
         {
-
             //ckecking email and username to see if already exists
             var userWithSameEmail = _dbCotext.Users.Where(u => u.UserEmail == user.UserEmail).SingleOrDefault();
-           // var userWithSameUsrname = _dbCotext.Users.Where(u => u.UserUserName == user.UserUserName)
-               //SingleOrDefault();
             if (userWithSameEmail != null)
             {
                 return BadRequest("user with this email already exists");
             }
-            //else if (userWithSameUsrname != null)
-            //{
-            //    return BadRequest("user with this username already exists");
-            //}
             var userObj = new User
             {
                 UserFirstName = user.UserFirstName,
                 UserLastName = user.UserLastName,
-                //UserUserName = user.UserUserName,
                 UserEmail = user.UserEmail,
                 UserPassword = SecurePasswordHasherHelper.Hash(user.UserPassword),
                 UserPhone = user.UserPhone,
                 ImageUrl = "/img\\default_profile_pic.jpg",
-                //Address = user.Address,
                 UserRole = "user"
             };
             _dbCotext.Users.Add(userObj);
@@ -173,7 +164,7 @@ namespace test.Controllers
 
         // PUT api/<UsersController1>/update/5
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] User user)
+        public IActionResult Update(int id, [FromForm] User user)
         {
             var myUser = _dbCotext.Users.Find(id);
             if (myUser == null)
@@ -182,11 +173,18 @@ namespace test.Controllers
             }
             else
             {
-                myUser.UserFirstName = user.UserFirstName;
-                myUser.UserLastName = user.UserLastName;
-                //myUser.UserUserName = user.UserUserName;
-                //myUser.Address = user.Address;
-
+                if (user.UserFirstName != null)
+                {
+                    myUser.UserFirstName = user.UserFirstName;
+                }
+                if (user.UserLastName != null)
+                {
+                    myUser.UserLastName = user.UserLastName;
+                }
+                if (user.UserSSN != null)
+                {
+                    myUser.UserSSN = user.UserSSN;
+                }
                 _dbCotext.SaveChanges();
                 return Ok("updated");
             }
@@ -195,7 +193,7 @@ namespace test.Controllers
 
         // DELETE api/<UsersController1>/5
         [HttpDelete("{id}")]
-        [Authorize(Roles ="admin")]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             var myUser = _dbCotext.Users.Find(id);

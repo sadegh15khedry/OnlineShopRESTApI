@@ -18,8 +18,6 @@ namespace test.Models
 
         public double UserSSN { set; get; }
 
-        //public string UserUserName { set; get; }
-
         public string UserEmail { set; get; }
 
         public string UserPassword { set; get; }
