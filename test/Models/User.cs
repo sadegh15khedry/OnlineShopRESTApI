@@ -18,7 +18,7 @@ namespace test.Models
 
         public double UserSSN { set; get; }
 
-        public string UserUserName { set; get; }
+        //public string UserUserName { set; get; }
 
         public string UserEmail { set; get; }
 
@@ -31,11 +31,11 @@ namespace test.Models
         public ICollection<Address> UserAddresses { get; set; }
 
 
-        //[ForeignKey(nameof(Product.ProductId))]
-        public virtual ICollection<Like> UserProductsLiked { get; set; }
+
+        public virtual ICollection<Like> UserLikes { get; set; }
 
 
-        //public ICollection<Product> NoticeProduct { get; set; }
+        public virtual ICollection<Notice> UserNotices { get; set; }
 
 
         public ICollection<Review> Reviews { get; set; }

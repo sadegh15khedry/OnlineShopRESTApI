@@ -22,15 +22,11 @@ namespace test.Models
         public string ProductAnalysis { get; set; }
 
 
-        public IEnumerable<Categorie> ProductCategories { get; set; }
+        public virtual ICollection<ProductCategorie> ProductCategories { get; set; }
 
-        //[ForeignKey(nameof(User.UserId))]
-        //[InverseProperty(nameof(User.UserProductsLiked))]
-        public virtual ICollection<Like> ProductUsersLiked { get; set; }
+        public virtual ICollection<Like> ProductLikes { get; set; }
 
-
-        //[InverseProperty(nameof(User.NoticeProduct))]
-        //public ICollection<User> ProductUsersNotice { get; set; }
+        public virtual ICollection<Notice> ProductNotices { get; set; }
 
         public ICollection<Tag> ProductTags { get; set; }
 

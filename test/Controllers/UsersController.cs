@@ -57,23 +57,22 @@ namespace test.Controllers
         {
 
             //ckecking email and username to see if already exists
-            var userWithSameEmail = _dbCotext.Users.Where(u => u.UserEmail == user.UserEmail)
-                .SingleOrDefault();
-            var userWithSameUsrname = _dbCotext.Users.Where(u => u.UserUserName == user.UserUserName)
-               .SingleOrDefault();
+            var userWithSameEmail = _dbCotext.Users.Where(u => u.UserEmail == user.UserEmail).SingleOrDefault();
+           // var userWithSameUsrname = _dbCotext.Users.Where(u => u.UserUserName == user.UserUserName)
+               //SingleOrDefault();
             if (userWithSameEmail != null)
             {
                 return BadRequest("user with this email already exists");
             }
-            else if (userWithSameUsrname != null)
-            {
-                return BadRequest("user with this username already exists");
-            }
+            //else if (userWithSameUsrname != null)
+            //{
+            //    return BadRequest("user with this username already exists");
+            //}
             var userObj = new User
             {
                 UserFirstName = user.UserFirstName,
                 UserLastName = user.UserLastName,
-                UserUserName = user.UserUserName,
+                //UserUserName = user.UserUserName,
                 UserEmail = user.UserEmail,
                 UserPassword = SecurePasswordHasherHelper.Hash(user.UserPassword),
                 UserPhone = user.UserPhone,
@@ -185,7 +184,7 @@ namespace test.Controllers
             {
                 myUser.UserFirstName = user.UserFirstName;
                 myUser.UserLastName = user.UserLastName;
-                myUser.UserUserName = user.UserUserName;
+                //myUser.UserUserName = user.UserUserName;
                 //myUser.Address = user.Address;
 
                 _dbCotext.SaveChanges();

@@ -25,7 +25,7 @@ namespace ShopAPISourceCode.Models
         public string CategorieImageUrl { get; set; }
 
 
-        public ICollection<Product> CategorieProducts { get; set; }
+        public virtual ICollection<ProductCategorie> CategorieProducts { get; set; }
 
         [NotMapped]
         public IFormFile CategorieImage { get; set; }

@@ -641,13 +641,13 @@ namespace ShopAPISourceCode.Migrations
             modelBuilder.Entity("ShopAPISourceCode.Models.Like", b =>
                 {
                     b.HasOne("test.Models.Product", "LikeProduct")
-                        .WithMany("ProductUsersLiked")
+                        .WithMany("ProductLikes")
                         .HasForeignKey("LikeProductProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("test.Models.User", "LikeUser")
-                        .WithMany("UserProductsLiked")
+                        .WithMany("UserLikes")
                         .HasForeignKey("LikeUserUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -786,7 +786,7 @@ namespace ShopAPISourceCode.Migrations
 
                     b.Navigation("ProductTags");
 
-                    b.Navigation("ProductUsersLiked");
+                    b.Navigation("ProductLikes");
                 });
 
             modelBuilder.Entity("test.Models.User", b =>
@@ -795,7 +795,7 @@ namespace ShopAPISourceCode.Migrations
 
                     b.Navigation("UserAddresses");
 
-                    b.Navigation("UserProductsLiked");
+                    b.Navigation("UserLikes");
                 });
 #pragma warning restore 612, 618
         }

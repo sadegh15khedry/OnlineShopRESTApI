@@ -8,17 +8,14 @@ using test.Models;
 
 namespace ShopAPISourceCode.Models
 {
-    public class Notice
+    public class ProductCategorie
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int NoticeId { set; get; }
+        public int ProductCategorieId { set; get; }
 
-        public virtual User NoticeUser { get; set; }
+        public Product ProductCategorieProduct { get; set; }
 
-        public virtual Product NoticeProduct { get; set; }
-
-        public DateTime NoticeDateTimeAdded { get; set; }
-    
+        public Categorie ProductCategorieCategorie { get; set; }
     }
 }
