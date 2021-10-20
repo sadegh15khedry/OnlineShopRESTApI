@@ -96,6 +96,7 @@ namespace test.Controllers
             new Claim(JwtRegisteredClaimNames.Email, myUser.UserEmail),
             new Claim(ClaimTypes.Email, myUser.UserEmail),
             new Claim(ClaimTypes.Role, myUser.UserRole),
+            new Claim(ClaimTypes.NameIdentifier, myUser.UserId.ToString()),
             };
 
             var token = _auth.GenerateAccessToken(claims);
@@ -114,9 +115,11 @@ namespace test.Controllers
 
         // PUT api/<UsersController1>/AddPhoto/5
         [HttpPut("[action]/{id}")]
+        [Authorize]
         public IActionResult AddPhoto(int id, [FromForm] IFormFile photo)
         {
-            var myUser = _dbCotext.Users.Find(id);
+            int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
+            var myUser = _dbCotext.Users.Find(userId);
             if (myUser == null)
             {
                 return NotFound("not found");
@@ -141,9 +144,11 @@ namespace test.Controllers
 
         // PUT api/<UsersController1>/RemovePhoto/5
         [HttpPut("[action]/{id}")]
+        [Authorize]
         public IActionResult RemovePhoto(int id)
         {
-            var myUser = _dbCotext.Users.Find(id);
+            int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
+            var myUser = _dbCotext.Users.Find(userId);
             if (myUser == null)
             {
                 return NotFound("not found");
@@ -163,11 +168,14 @@ namespace test.Controllers
 
 
         // PUT api/<UsersController1>/update/5
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromForm] string? userFirstName, [FromForm] string? userLastName,
             [FromForm] string? userSSN)
         {
-            var myUser = _dbCotext.Users.Find(id);
+            int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
+            var myUser = _dbCotext.Users.Find(userId);
+
             if (myUser == null)
             {
                 return NotFound("no found");
@@ -208,6 +216,9 @@ namespace test.Controllers
                 return Ok("deleted");
             }
         }
+
+
+        //public static string SubjectId(this ClaimsPrincipal user) { return user?.Claims?.FirstOrDefault(c => c.Type.Equals("sub", StringComparison.OrdinalIgnoreCase))?.Value; }
 
     }
 }
