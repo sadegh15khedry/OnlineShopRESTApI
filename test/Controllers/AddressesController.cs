@@ -70,25 +70,86 @@ namespace ShopAPISourceCode.Controllers
             };
 
             _dbCotext.Addresses.Add(address);
-            //myUser.UserAddresses.Add(address);
             _dbCotext.SaveChanges();
-
             return StatusCode(201, address);
-
-
         }
 
         // PUT api/<AddressesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{addressId}")]
+        [Authorize]
+        public IActionResult Put(int addressId, [FromForm] string? addressState, [FromForm] string? addressCounty,
+            [FromForm] string? addressCity, [FromForm] string? addressHome, [FromForm] string? addressPostalCode)
         {
+            int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
+            User myUser = _dbCotext.Users.Find(userId);
+            var isNumeric = int.TryParse(addressPostalCode, out int addressPostalCodeNumber);
+            Address myAddress = _dbCotext.Addresses.Find(addressId);
+
+            if (myUser == null)
+            {
+                return StatusCode(500, "not a valid userId");
+            }
+            else if (myAddress == null)
+            {
+                return StatusCode(404, "address not found");
+            }
+            else if (myUser.UserId != myAddress.AddressUserId)
+            {
+                return StatusCode(500, "you are not alowed to update this address");
+            }
+            //valid requst going for update
+            else
+            {
+                if (addressState != null)
+                    myAddress.AddressState = addressState;
+
+                if (addressCounty != null)
+                    myAddress.AddressCounty = addressCounty;
+
+                if (addressCity != null)
+                    myAddress.AddressCity = addressCity;
+
+                if (addressHome != null)
+                    myAddress.AddressHome = addressHome;
+
+                if (isNumeric == true && addressPostalCode != null)
+                    myAddress.AddressPostalCode = addressPostalCodeNumber;
+
+                _dbCotext.SaveChanges();
+                //return Ok("address updated");
+                return Ok(myAddress);
+            }
+
         }
 
         // DELETE api/<AddressesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{addressId}")]
+        [Authorize]
+        public IActionResult Delete(int addressId)
         {
+            int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
+            User myUser = _dbCotext.Users.Find(userId);
 
+            Address myAddress = _dbCotext.Addresses.Find(addressId);
+
+            if (myUser == null)
+            {
+                return StatusCode(500, "not a valid userId");
+            }
+            else if (myAddress == null)
+            {
+                return StatusCode(404, "address not found");
+            }
+            else if (myUser.UserId != myAddress.AddressUserId)
+            {
+                return StatusCode(500, "you are not alowed to delete this address");
+            }
+            else
+            {
+                _dbCotext.Addresses.Remove(myAddress);
+                _dbCotext.SaveChanges();
+                return Ok("address removed");
+            }
         }
     }
 }
