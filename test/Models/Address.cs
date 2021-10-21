@@ -22,8 +22,13 @@ namespace ShopAPISourceCode.Models
 
         public string AddressHome { get; set; }
 
-        public double AddressPostalCode { set; get; }
+        public int AddressPostalCode { set; get; }
 
-        public User AddressUser { get; set; }
+
+        [ForeignKey(nameof(User))]
+        public int AddressUserId { get; set; }
+
+        
+
     }
 }

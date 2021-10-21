@@ -3,7 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using ShopAPISourceCode.Models;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
@@ -70,6 +74,7 @@ namespace test.Controllers
                 UserPhone = user.UserPhone,
                 ImageUrl = "/img\\default_profile_pic.jpg",
                 UserRole = "user"
+                
             };
             _dbCotext.Users.Add(userObj);
             _dbCotext.SaveChanges();
@@ -114,9 +119,9 @@ namespace test.Controllers
         }
 
         // PUT api/<UsersController1>/AddPhoto/5
-        [HttpPut("[action]/{id}")]
+        [HttpPut("[action]")]
         [Authorize]
-        public IActionResult AddPhoto(int id, [FromForm] IFormFile photo)
+        public IActionResult AddPhoto([FromForm] IFormFile photo)
         {
             int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
             var myUser = _dbCotext.Users.Find(userId);
@@ -143,9 +148,9 @@ namespace test.Controllers
 
 
         // PUT api/<UsersController1>/RemovePhoto/5
-        [HttpPut("[action]/{id}")]
+        [HttpPut("[action]")]
         [Authorize]
-        public IActionResult RemovePhoto(int id)
+        public IActionResult RemovePhoto()
         {
             int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
             var myUser = _dbCotext.Users.Find(userId);
@@ -169,8 +174,8 @@ namespace test.Controllers
 
         // PUT api/<UsersController1>/update/5
         [Authorize]
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromForm] string? userFirstName, [FromForm] string? userLastName,
+        [HttpPut]
+        public IActionResult Update([FromForm] string? userFirstName, [FromForm] string? userLastName,
             [FromForm] string? userSSN)
         {
             int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());

@@ -88,8 +88,6 @@ namespace test.Data
                 .WithMany(y => y.ProductCategories)
                 .IsRequired()
                 .HasForeignKey("ProductCategorieProductId");
-
-
         }
 
 
