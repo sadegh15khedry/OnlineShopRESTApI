@@ -27,5 +27,7 @@ namespace ShopAPISourceCode.Models
         public DateTime OptionDiscountEnd { get; set; }
 
         public string OptionType { get; set; }
+
+        public virtual ICollection<Image> OptionImages { get; set; }
     }
 }

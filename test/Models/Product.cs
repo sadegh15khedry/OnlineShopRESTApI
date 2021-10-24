@@ -37,7 +37,5 @@ namespace test.Models
 
         public virtual ICollection<Spec> ProductSpecs { get; set; }
 
-        public virtual ICollection<Image> ProductImages { get; set; }
-
     }
 }
