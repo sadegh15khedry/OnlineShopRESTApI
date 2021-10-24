@@ -77,6 +77,10 @@ namespace test.Data
                .HasMany(x => x.CategorieProducts)
                .WithOne(x => x.ProductCategorieCategorie)
                .IsRequired();
+            modelBuilder.Entity<Categorie>()
+               .HasMany(x => x.CategorieChilds)
+               .WithOne(x => x.CategorieParent)
+               .HasForeignKey("CategorieParentId");
 
             modelBuilder.Entity<ProductCategorie>()
                 .HasOne(x => x.ProductCategorieCategorie)

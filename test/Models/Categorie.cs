@@ -19,8 +19,10 @@ namespace ShopAPISourceCode.Models
 
         public string CategorieMetaTitle { set; get; }
 
-        [ForeignKey(nameof(Categorie))]
+        [ForeignKey(nameof(Categorie)), Column("categorieParentId")]
         public Categorie CategorieParent { set; get; }
+
+        public virtual ICollection<Categorie> CategorieChilds { set; get; }
 
         public string CategorieImageUrl { get; set; }
 
