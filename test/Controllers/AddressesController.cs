@@ -49,6 +49,7 @@ namespace ShopAPISourceCode.Controllers
             int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
             User myUser = _dbCotext.Users.Find(userId);
             var isNumeric = int.TryParse(addressPostalCode, out int addressPostalCodeNumber);
+
             if (myUser == null)
             {
                 return StatusCode(500, "not a valid userId");
@@ -65,7 +66,7 @@ namespace ShopAPISourceCode.Controllers
                 AddressCounty = addressCounty,
                 AddressCity = addressCity,
                 AddressHome = addressHome,
-                AddressPostalCode = Int32.Parse(addressPostalCode),
+                AddressPostalCode = addressPostalCodeNumber,
                 AddressUserId = myUser.UserId
             };
 
@@ -77,8 +78,8 @@ namespace ShopAPISourceCode.Controllers
         // PUT api/<AddressesController>/5
         [HttpPut("{addressId}")]
         [Authorize]
-        public IActionResult Put(int addressId, [FromForm] string? addressState, [FromForm] string? addressCounty,
-            [FromForm] string? addressCity, [FromForm] string? addressHome, [FromForm] string? addressPostalCode)
+        public IActionResult Put(int addressId, [FromForm] string addressState, [FromForm] string addressCounty,
+            [FromForm] string addressCity, [FromForm] string addressHome, [FromForm] string addressPostalCode)
         {
             int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
             User myUser = _dbCotext.Users.Find(userId);
@@ -116,7 +117,6 @@ namespace ShopAPISourceCode.Controllers
                     myAddress.AddressPostalCode = addressPostalCodeNumber;
 
                 _dbCotext.SaveChanges();
-                //return Ok("address updated");
                 return Ok(myAddress);
             }
 

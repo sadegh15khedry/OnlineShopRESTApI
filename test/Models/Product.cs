@@ -21,6 +21,7 @@ namespace test.Models
 
         public string ProductAnalysis { get; set; }
 
+        public virtual ICollection<Option> ProductOptions { get; set; }
 
         public virtual ICollection<ProductCategorie> ProductCategories { get; set; }
 
@@ -28,14 +29,15 @@ namespace test.Models
 
         public virtual ICollection<Notice> ProductNotices { get; set; }
 
-        public ICollection<Tag> ProductTags { get; set; }
+        public virtual ICollection<Tag> ProductTags { get; set; }
 
-        public ICollection<Review> ProductReviews { get; set; }
+        public virtual ICollection<Review> ProductReviews { get; set; }
 
-        public ICollection<Meta> ProductMetas { get; set; }
+        public virtual ICollection<Meta> ProductMetas { get; set; }
 
+        public virtual ICollection<Spec> ProductSpecs { get; set; }
 
-        public ICollection<Spec> ProductSpecs { get; set; }
+        public virtual ICollection<Image> ProductImages { get; set; }
 
     }
 }

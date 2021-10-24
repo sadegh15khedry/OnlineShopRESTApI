@@ -11,20 +11,21 @@ namespace ShopAPISourceCode.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int OptionId { get; set; }
 
-        public Product Product { get; set; }
+        [ForeignKey(nameof(Product))]
+        public int OptionProductId { get; set; }
 
-        public double Price { get; set; }
+        public double OptionPrice { get; set; }
 
-        public double Quantity { get; set; }
+        public double OptionQuantity { get; set; }
 
-        public float Discount { get; set; }
+        public float OptionDiscount { get; set; }
 
-        public DateTime DiscountStrt { get; set; }
+        public DateTime OptionDiscountStart { get; set; }
 
-        public DateTime DiscountEnd { get; set; }
+        public DateTime OptionDiscountEnd { get; set; }
 
-        public string Type { get; set; }
+        public string OptionType { get; set; }
     }
 }

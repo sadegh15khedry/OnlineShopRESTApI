@@ -629,11 +629,11 @@ namespace ShopAPISourceCode.Migrations
                         .WithMany()
                         .HasForeignKey("ImageProductOptionId");
 
-                    b.HasOne("test.Models.Product", "ImageProduct")
+                    b.HasOne("test.Models.Product", "ImageProductId")
                         .WithMany()
                         .HasForeignKey("ImageProductProductId");
 
-                    b.Navigation("ImageProduct");
+                    b.Navigation("ImageProductId");
 
                     b.Navigation("ImageProductOption");
                 });

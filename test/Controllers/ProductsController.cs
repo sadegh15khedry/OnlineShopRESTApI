@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using test.Data;
 using test.Models;
@@ -23,7 +24,6 @@ namespace test.Controllers
         [HttpGet]
         public IActionResult Get(string? sort, int? pageNumber, int? pageSize)
         {
-            
             return Ok(_dbContext.Products);
         }
 
@@ -64,7 +64,6 @@ namespace test.Controllers
         [HttpPost]
         public IActionResult Post([FromForm] Product itemObj)
         {
-            
             _dbContext.Products.Add(itemObj);
             _dbContext.SaveChanges();
 
@@ -104,6 +103,7 @@ namespace test.Controllers
 
         // DELETE api/<ItemsController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles ="admin")]
         public IActionResult Delete(int id)
         {
             var myItem = _dbContext.Products.Find(id);
