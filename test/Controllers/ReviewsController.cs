@@ -44,17 +44,33 @@ namespace ShopAPISourceCode.Controllers
             return review;
         }
 
+        // GET: api/Reviews/5
+        [HttpGet("[action]/{id}")]
+        public async Task<ActionResult<Review>> GetReviewByProductId(int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+
+            if (product == null)
+            {
+                return NotFound("product not found");
+            }
+
+            var reviews = await _context.Reviews.Where(s => s.ReviewProductId == product.ProductId).ToArrayAsync();
+
+            return Ok(reviews);
+        }
+
         // PUT: api/Reviews/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutReview(int id,[FromForm] Review review)
+        public async Task<IActionResult> PutReview(int id, [FromForm] Review review)
         {
             var isUserIdValid = Int32.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
             var myReview = _context.Reviews.Find(id);
-            var myUser = _context.Users.Find(userId);   
+            var myUser = _context.Users.Find(userId);
             var myProduct = _context.Products.Where(s => s.ProductId == myReview.ReviewProductId);
-            
+
 
             if (myProduct == null)
             {
@@ -66,7 +82,7 @@ namespace ShopAPISourceCode.Controllers
             }
 
             //updating
-            if(review.ReviewTitle != null)
+            if (review.ReviewTitle != null)
                 myReview.ReviewTitle = review.ReviewTitle;
 
             if (review.ReviewRating != null)
@@ -97,7 +113,7 @@ namespace ShopAPISourceCode.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok("review updated");
         }
 
 
@@ -136,10 +152,10 @@ namespace ShopAPISourceCode.Controllers
             var isUserIdValid = Int32.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
             var myUser = _context.Users.Find(userId);
             var review = await _context.Reviews.FindAsync(id);
-            
+
             if (myUser.UserId != review.ReviewUserId)
                 return Unauthorized("you are not allowed to delete this review");
-            
+
             else if (review == null)
             {
                 return NotFound();
