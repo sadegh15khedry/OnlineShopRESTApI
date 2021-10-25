@@ -21,7 +21,7 @@ namespace test.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private ShopDbContext _dbCotext;
+        private ShopDbContext _context;
         private IConfiguration _configuration;
         private readonly AuthService _auth;
 
@@ -30,21 +30,21 @@ namespace test.Controllers
         {
             _configuration = configuration;
             _auth = new AuthService(_configuration);
-            _dbCotext = dbCotext;
+            _context = dbCotext;
         }
 
         // GET: api/<UsersController1>
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_dbCotext.Users);
+            return Ok(_context.Users);
         }
 
         // GET api/<UsersController1>/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var myUser = _dbCotext.Users.Find(id);
+            var myUser = _context.Users.Find(id);
             if (myUser == null)
             {
                 return NotFound();
@@ -60,7 +60,7 @@ namespace test.Controllers
         public IActionResult Register([FromForm] User user)
         {
             //ckecking email and username to see if already exists
-            var userWithSameEmail = _dbCotext.Users.Where(u => u.UserEmail == user.UserEmail).SingleOrDefault();
+            var userWithSameEmail = _context.Users.Where(u => u.UserEmail == user.UserEmail).SingleOrDefault();
             if (userWithSameEmail != null)
             {
                 return BadRequest("user with this email already exists");
@@ -76,8 +76,8 @@ namespace test.Controllers
                 UserRole = "user"
                 
             };
-            _dbCotext.Users.Add(userObj);
-            _dbCotext.SaveChanges();
+            _context.Users.Add(userObj);
+            _context.SaveChanges();
             return StatusCode(201, "user created");
 
 
@@ -87,7 +87,7 @@ namespace test.Controllers
         [HttpPost("[action]")]
         public IActionResult Login([FromForm] string userEmail, [FromForm] string userPassword)
         {
-            var myUser = _dbCotext.Users.FirstOrDefault(u => u.UserEmail == userEmail);
+            var myUser = _context.Users.FirstOrDefault(u => u.UserEmail == userEmail);
             if (myUser == null)
             {
                 return NotFound();
@@ -124,7 +124,7 @@ namespace test.Controllers
         public IActionResult AddPhoto([FromForm] IFormFile photo)
         {
             int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
-            var myUser = _dbCotext.Users.Find(userId);
+            var myUser = _context.Users.Find(userId);
             if (myUser == null)
             {
                 return NotFound("not found");
@@ -137,7 +137,7 @@ namespace test.Controllers
                 var fileStream = new FileStream(filePath, FileMode.Create);
                 photo.CopyTo(fileStream);
                 myUser.ImageUrl = filePath.Remove(0, 7);
-                _dbCotext.SaveChanges();
+                _context.SaveChanges();
                 return Ok("updated");
             }
             else
@@ -153,7 +153,7 @@ namespace test.Controllers
         public IActionResult RemovePhoto()
         {
             int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
-            var myUser = _dbCotext.Users.Find(userId);
+            var myUser = _context.Users.Find(userId);
             if (myUser == null)
             {
                 return NotFound("not found");
@@ -162,7 +162,7 @@ namespace test.Controllers
             else if (myUser != null)
             {
                 myUser.ImageUrl = "/img\\default_profile_pic.jpg";
-                _dbCotext.SaveChanges();
+                _context.SaveChanges();
                 return Ok("updated");
             }
             else
@@ -179,7 +179,7 @@ namespace test.Controllers
             [FromForm] string? userSSN)
         {
             int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
-            var myUser = _dbCotext.Users.Find(userId);
+            var myUser = _context.Users.Find(userId);
 
             if (myUser == null)
             {
@@ -198,7 +198,7 @@ namespace test.Controllers
             {
                 myUser.UserSSN = Int16.Parse(userSSN);
             }
-            _dbCotext.SaveChanges();
+            _context.SaveChanges();
             return Ok("updated");
 
 
@@ -209,15 +209,15 @@ namespace test.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
-            var myUser = _dbCotext.Users.Find(id);
+            var myUser = _context.Users.Find(id);
             if (myUser == null)
             {
                 return NotFound("no found");
             }
             else
             {
-                _dbCotext.Users.Remove(myUser);
-                _dbCotext.SaveChanges();
+                _context.Users.Remove(myUser);
+                _context.SaveChanges();
                 return Ok("deleted");
             }
         }

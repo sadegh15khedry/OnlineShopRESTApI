@@ -1,164 +1,106 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using test.Data;
 using test.Models;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
-namespace test.Controllers
+namespace ShopAPISourceCode.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private ShopDbContext _dbContext;
+        private readonly ShopDbContext _context;
 
-        public ProductsController(ShopDbContext dbContext)
+        public ProductsController(ShopDbContext context)
         {
-            _dbContext = dbContext;
+            _context = context;
         }
 
-        //GET: api/<ItemsController>
+        // GET: api/Products
         [HttpGet]
-        public IActionResult Get(string? sort, int? pageNumber, int? pageSize)
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return Ok(_dbContext.Products);
+            return await _context.Products.ToListAsync();
         }
 
-        // GET api/<ItemsController>/5
+        // GET: api/Products/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            var myItem = _dbContext.Products.Find(id);
-            if (myItem == null)
+            var product = await _context.Products.FindAsync(id);
+
+            if (product == null)
             {
-                return NotFound("not found");
-            }
-            else
-            {
-                return Ok(myItem);
+                return NotFound();
             }
 
+            return product;
         }
 
-        // GET api/<ItemsController>/search?title=
-        [HttpGet("[action]")]
-        public IActionResult Search(string title)
-        {
-            var products = from Product in _dbContext.Products
-                           where Product.ProductTitle.StartsWith(title)
-                           select new
-                           {
-                               Id = Product.ProductId,
-                               Title = Product.ProductTitle
-                           };
-            return Ok(products);
-        }
-
-
-
-
-        // POST api/<ItemsController>
-        [HttpPost]
-        public IActionResult Post([FromForm] Product itemObj)
-        {
-            _dbContext.Products.Add(itemObj);
-            _dbContext.SaveChanges();
-
-            return StatusCode(201, "item created");
-        }
-
-
-        // PUT api/items/5
+        // PUT: api/Products/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromForm] string? productDescription, [FromForm] string? productTitle,
-           [FromForm] string? productBrand , [FromForm] string? productAnalysis)
+        public async Task<IActionResult> PutProduct(int id,[FromForm] Product product)
         {
-            var myProduct = _dbContext.Products.Find(id);
+            var myProduct = await _context.Products.FindAsync(id);
 
             //ckecking if product exists
             if (myProduct == null)
                 return NotFound("not found");
 
             //updating the product
-            if (productDescription != null)
-                myProduct.ProductDescription = productDescription;
+            if (product.ProductDescription != null)
+                myProduct.ProductDescription = product.ProductDescription;
 
-            if (productTitle != null)
-                myProduct.ProductTitle = productTitle;
+            if (product.ProductTitle != null)
+                myProduct.ProductTitle = product.ProductTitle;
 
-            if (productBrand != null)
-                myProduct.ProductBrand = productBrand;
+            if (product.ProductBrand != null)
+                myProduct.ProductBrand = product.ProductBrand;
 
-            if (productAnalysis != null)
-                myProduct.ProductAnalysis = productAnalysis;
+            if (product.ProductAnalysis != null)
+                myProduct.ProductAnalysis = product.ProductAnalysis;
 
-            _dbContext.SaveChanges();
+            await _context.SaveChangesAsync();
             return Ok("updated");
-
-
         }
 
-        // DELETE api/<ItemsController>/5
-        [HttpDelete("{id}")]
-        [Authorize(Roles ="admin")]
-        public IActionResult Delete(int id)
+        // POST: api/Products
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Product>> PostProduct([FromForm]Product product)
         {
-            var myItem = _dbContext.Products.Find(id);
-            if (myItem == null)
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
+        }
+
+        // DELETE: api/Products/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
             {
-                return NotFound("not found");
-            }
-            else
-            {
-                _dbContext.Products.Remove(myItem);
-                _dbContext.SaveChanges();
-                return Ok("deleted");
+                return NotFound();
             }
 
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
 
+            return Ok("product deleted");
+        }
+
+
+        private bool ProductExists(int id)
+        {
+            return _context.Products.Any(e => e.ProductId == id);
         }
     }
-
-
-    /*var guid = Guid.NewGuid();
-            var filePath = Path.Combine("wwwroot/img", guid + ".jpg");
-            if (itemObj.Image != null)
-            {
-                var fileStream = new FileStream(filePath, FileMode.Create);
-                itemObj.Image.CopyTo(fileStream);
-            }*/
-            //itemObj.ImageUrl = filePath.Remove(0, 7);*
-
-    /*var currentPageSize = pageSize ?? 20;
-    var currentPageNumber = pageNumber ?? 1;
-    var currentSort = sort ?? "none";
-
-    if (sort == "asc")
-    {
-        var ourItems = _dbContext.Products.OrderBy(i => i.Price);
-        return Ok(ourItems.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
-
-    }
-    else if (sort == "des")
-    {
-        var ourItems = _dbContext.Products.OrderByDescending(i => i.Price);
-        return Ok(ourItems.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
-    }
-    else
-    {
-        return Ok(_dbContext.Products.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
-    }*/
-
-    //var guid = Guid.NewGuid();
-    //var filePath = Path.Combine("wwwroot/img", guid + ".jpg");
-    /*if (itemObj.Image != null)
-    {
-        var fileStream = new FileStream(filePath, FileMode.Create);
-        itemObj.Image.CopyTo(fileStream);
-        itemObj.ImageUrl = filePath.Remove(0, 7);
-        myProduct.ImageUrl = itemObj.ImageUrl;
-    }*/
 }

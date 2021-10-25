@@ -23,12 +23,14 @@ namespace ShopAPISourceCode.Controllers
             _context = context;
         }
 
+
         // GET: api/Addresses
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
         {
             return await _context.Addresses.ToListAsync();
         }
+
 
         // GET: api/Addresses/5
         [HttpGet("{id}")]
@@ -42,6 +44,26 @@ namespace ShopAPISourceCode.Controllers
             }
 
             return address;
+        }
+
+        [HttpGet("[action]")]
+        [Authorize]
+        public async Task<ActionResult<Address>> GetUserAddresses()
+        {
+            var isUserIdValid = int.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
+            User myUser = await _context.Users.FindAsync(userId);
+            var myAddress = await _context.Addresses.Where(s => s.AddressUserId == myUser.UserId).ToArrayAsync();
+            
+            if (myUser == null)
+            {
+                return NotFound("user not found");
+            }
+            else if (myAddress == null)
+            {
+                return NotFound("no address found");
+            }
+
+            return Ok(myAddress);
         }
 
 
