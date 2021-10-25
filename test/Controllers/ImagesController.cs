@@ -14,11 +14,11 @@ namespace ShopAPISourceCode.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private ShopDbContext _dbCotext;
+        private ShopDbContext _context;
 
-        public ImagesController(ShopDbContext dbCotext)
+        public ImagesController(ShopDbContext context)
         {
-            _dbCotext = dbCotext;
+            _context = context;
         }
 
 
@@ -27,18 +27,18 @@ namespace ShopAPISourceCode.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_dbCotext.Images);
+            return Ok(_context.Images);
         }
 
         [HttpGet("[action]/{optionId}")]
         public IActionResult GetOptionImages(int optionId)
         {
-            var myOption = _dbCotext.Options.Find(optionId);
+            var myOption = _context.Options.Find(optionId);
             
             if (myOption == null)
                 return NotFound("option not found");
 
-            var myImages = _dbCotext.Images.Where(s => s.ImageProductOptionId == optionId);
+            var myImages = _context.Images.Where(s => s.ImageProductOptionId == optionId);
             return Ok(myImages);
 
         }
@@ -46,7 +46,7 @@ namespace ShopAPISourceCode.Controllers
             [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var myImage = _dbCotext.Images.Find(id);
+            var myImage = _context.Images.Find(id);
 
             if (myImage == null)
             {
@@ -83,11 +83,11 @@ namespace ShopAPISourceCode.Controllers
                 myImage.ImageProductOptionId = imageOptionIdNumber;
                 myImage.ImagesDescription = imagesDescription;
                 
-                _dbCotext.Images.Add(myImage);
-                _dbCotext.SaveChanges();
+                _context.Images.Add(myImage);
+                _context.SaveChanges();
                 return Ok("image added");
             }
-            var myOption = _dbCotext.Options.Find();
+            var myOption = _context.Options.Find();
             return Ok();
         }
 
@@ -95,13 +95,13 @@ namespace ShopAPISourceCode.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var myImage = _dbCotext.Images.Find(id);
+            var myImage = _context.Images.Find(id);
             if (myImage == null)
             {
                 return NotFound("image not found");
             }
-            _dbCotext.Images.Remove(myImage);
-            _dbCotext.SaveChanges();
+            _context.Images.Remove(myImage);
+            _context.SaveChanges();
             return Ok("image deleted");
         }
     }

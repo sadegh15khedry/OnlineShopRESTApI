@@ -67,9 +67,9 @@ namespace ShopAPISourceCode.Controllers
         public async Task<IActionResult> PutReview(int id, [FromForm] Review review)
         {
             var isUserIdValid = Int32.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
-            var myReview = _context.Reviews.Find(id);
-            var myUser = _context.Users.Find(userId);
-            var myProduct = _context.Products.Where(s => s.ProductId == myReview.ReviewProductId);
+            var myReview = await _context.Reviews.FindAsync(id);
+            var myUser = await _context.Users.FindAsync(userId);
+            var myProduct = await _context.Products.Where(s => s.ProductId == myReview.ReviewProductId).ToArrayAsync();
 
 
             if (myProduct == null)
@@ -125,15 +125,17 @@ namespace ShopAPISourceCode.Controllers
         {
 
             var isUserIdValid = Int32.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
-            var myUser = _context.Users.Find(userId);
-            var myProduct = _context.Products.Find(review.ReviewProductId);
+            var myUser = await _context.Users.FindAsync(userId);
+            var myProduct = await _context.Products.FindAsync(review.ReviewProductId);
 
             if (myUser == null)
             {
                 return NotFound("user not found");
             }
             else if (myProduct == null)
+            {
                 return NotFound("product not found");
+            }
 
             review.ReviewUserId = myUser.UserId;
             _context.Reviews.Add(review);
@@ -150,7 +152,7 @@ namespace ShopAPISourceCode.Controllers
         public async Task<IActionResult> DeleteReview(int id)
         {
             var isUserIdValid = Int32.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
-            var myUser = _context.Users.Find(userId);
+            var myUser = await _context.Users.FindAsync(userId);
             var review = await _context.Reviews.FindAsync(id);
 
             if (myUser.UserId != review.ReviewUserId)

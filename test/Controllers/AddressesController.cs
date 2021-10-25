@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ShopAPISourceCode.Models;
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using test.Data;
 using test.Models;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ShopAPISourceCode.Controllers
 {
@@ -15,141 +16,111 @@ namespace ShopAPISourceCode.Controllers
     [ApiController]
     public class AddressesController : ControllerBase
     {
-        private ShopDbContext _dbCotext;
+        private readonly ShopDbContext _context;
 
-        public AddressesController(ShopDbContext dbCotext)
+        public AddressesController(ShopDbContext context)
         {
-            _dbCotext = dbCotext;
+            _context = context;
         }
 
-
-        // GET: api/<AddressesController>
+        // GET: api/Addresses
         [HttpGet]
-        public IActionResult Get()
+        public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
         {
-            return Ok(_dbCotext.Addresses);
+            return await _context.Addresses.ToListAsync();
         }
 
-        // GET api/<AddressesController>/GetUserAddresses
-        [HttpGet("[action]")]
+        // GET: api/Addresses/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Address>> GetAddress(int id)
+        {
+            var address = await _context.Addresses.FindAsync(id);
+
+            if (address == null)
+            {
+                return NotFound();
+            }
+
+            return address;
+        }
+
+
+        // PUT: api/Addresses/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
         [Authorize]
-        public IActionResult GetUserAddresses()
+        public async Task<IActionResult> PutAddress(int id, [FromForm] Address address)
         {
-            int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
-            var myAddress = _dbCotext.Addresses.Where(s => s.AddressUserId == userId);
-            return Ok(myAddress);
+            var isUserIdValid = int.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
+            User myUser = await _context.Users.FindAsync(userId);
+            Address myAddress =  await _context.Addresses.FindAsync(id);
+
+            if (myUser == null)
+            {
+                return BadRequest("user not valid");
+            }
+
+            else if (myAddress.AddressUserId != myUser.UserId)
+            {
+                return Unauthorized("you are not allowed to update this address");
+            }
+
+            myAddress.AddressCity = address.AddressCity;
+            myAddress.AddressCounty = address.AddressCounty;
+            myAddress.AddressHome = address.AddressHome;
+            myAddress.AddressPostalCode = address.AddressPostalCode;
+            myAddress.AddressState = address.AddressState;
+
+            await _context.SaveChangesAsync();
+            return Ok("addres updated");
         }
 
-        //POST api/<AddressesController>
+
+        // POST: api/Addresses
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize]
-        public IActionResult Post([FromForm] string addressState, [FromForm] string addressCounty,
-            [FromForm] string addressCity, [FromForm] string addressHome, [FromForm] string addressPostalCode)
+        public async Task<ActionResult<Address>> PostAddress([FromForm] Address address)
         {
-            int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
-            User myUser = _dbCotext.Users.Find(userId);
-            var isNumeric = int.TryParse(addressPostalCode, out int addressPostalCodeNumber);
+            var isUserIdValid = int.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
+            User myUser = await _context.Users.FindAsync(userId);
 
             if (myUser == null)
-            {
-                return StatusCode(500, "not a valid userId");
-            }
+                return BadRequest("user not valid");
 
-            else if (isNumeric == false)
-            {
-                return StatusCode(405, "not a valid postal code");
-            }
+            address.AddressUserId = myUser.UserId;
+            await _context.Addresses.AddAsync(address);
+            await _context.SaveChangesAsync();
 
-            Address address = new Address
-            {
-                AddressState = addressState,
-                AddressCounty = addressCounty,
-                AddressCity = addressCity,
-                AddressHome = addressHome,
-                AddressPostalCode = addressPostalCodeNumber,
-                AddressUserId = myUser.UserId
-            };
-
-            _dbCotext.Addresses.Add(address);
-            _dbCotext.SaveChanges();
-            return StatusCode(201, address);
+            return CreatedAtAction("GetAddress", new { id = address.AddressId }, address);
         }
 
-        // PUT api/<AddressesController>/5
-        [HttpPut("{addressId}")]
+
+        // DELETE: api/Addresses/5
+        [HttpDelete("{id}")]
         [Authorize]
-        public IActionResult Put(int addressId, [FromForm] string addressState, [FromForm] string addressCounty,
-            [FromForm] string addressCity, [FromForm] string addressHome, [FromForm] string addressPostalCode)
+        public async Task<IActionResult> DeleteAddress(int id)
         {
-            int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
-            User myUser = _dbCotext.Users.Find(userId);
-            var isNumeric = int.TryParse(addressPostalCode, out int addressPostalCodeNumber);
-            Address myAddress = _dbCotext.Addresses.Find(addressId);
+            var isUserIdValid = int.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
+            User myUser = await _context.Users.FindAsync(userId);
 
-            if (myUser == null)
+            var myAddress = await _context.Addresses.FindAsync(id);
+            if (myAddress == null)
             {
-                return StatusCode(500, "not a valid userId");
+                return NotFound("address not found");
             }
-            else if (myAddress == null)
-            {
-                return StatusCode(404, "address not found");
-            }
-            else if (myUser.UserId != myAddress.AddressUserId)
-            {
-                return StatusCode(500, "you are not alowed to update this address");
-            }
-            //valid requst going for update
-            else
-            {
-                if (addressState != null)
-                    myAddress.AddressState = addressState;
+            else if (myAddress.AddressUserId != myUser.UserId)
+                return Unauthorized("you are not allowed to delete this address");
 
-                if (addressCounty != null)
-                    myAddress.AddressCounty = addressCounty;
+            _context.Addresses.Remove(myAddress);
+            await _context.SaveChangesAsync();
 
-                if (addressCity != null)
-                    myAddress.AddressCity = addressCity;
-
-                if (addressHome != null)
-                    myAddress.AddressHome = addressHome;
-
-                if (isNumeric == true && addressPostalCode != null)
-                    myAddress.AddressPostalCode = addressPostalCodeNumber;
-
-                _dbCotext.SaveChanges();
-                return Ok(myAddress);
-            }
-
+            return NoContent();
         }
 
-        // DELETE api/<AddressesController>/5
-        [HttpDelete("{addressId}")]
-        [Authorize]
-        public IActionResult Delete(int addressId)
+        private bool AddressExists(int id)
         {
-            int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
-            User myUser = _dbCotext.Users.Find(userId);
-
-            Address myAddress = _dbCotext.Addresses.Find(addressId);
-
-            if (myUser == null)
-            {
-                return StatusCode(500, "not a valid userId");
-            }
-            else if (myAddress == null)
-            {
-                return StatusCode(404, "address not found");
-            }
-            else if (myUser.UserId != myAddress.AddressUserId)
-            {
-                return StatusCode(500, "you are not alowed to delete this address");
-            }
-            else
-            {
-                _dbCotext.Addresses.Remove(myAddress);
-                _dbCotext.SaveChanges();
-                return Ok("address removed");
-            }
+            return _context.Addresses.Any(e => e.AddressId == id);
         }
     }
 }
