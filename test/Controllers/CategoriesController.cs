@@ -42,10 +42,10 @@ namespace ShopAPISourceCode.Controllers
             return categorie;
         }
 
+
         // PUT: api/Categories/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategorie(int id, Categorie categorie)
+        public async Task<IActionResult> PutCategorie(int id, [FromForm] Categorie categorie)
         {
             if (id != categorie.CategorieId)
             {
@@ -70,13 +70,13 @@ namespace ShopAPISourceCode.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok("categorie updated");
         }
 
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Categorie>> PostCategorie(Categorie categorie)
+        public async Task<ActionResult<Categorie>> PostCategorie([FromForm] Categorie categorie)
         {
             _context.Categories.Add(categorie);
             await _context.SaveChangesAsync();

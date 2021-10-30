@@ -53,7 +53,7 @@ namespace ShopAPISourceCode.Controllers
             var isUserIdValid = int.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
             User myUser = await _context.Users.FindAsync(userId);
             var myAddress = await _context.Addresses.Where(s => s.AddressUserId == myUser.UserId).ToArrayAsync();
-            
+
             if (myUser == null)
             {
                 return NotFound("user not found");
@@ -71,30 +71,46 @@ namespace ShopAPISourceCode.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutAddress(int id, [FromForm] Address address)
+        public async Task<IActionResult> PutAddress(int id,[FromForm] Address address)
         {
+            if (id != address.AddressId)
+            {
+                return BadRequest("bad update requset");
+            }
+
             var isUserIdValid = int.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
-            User myUser = await _context.Users.FindAsync(userId);
-            Address myAddress =  await _context.Addresses.FindAsync(id);
+            var myUser = await _context.Users.FindAsync(userId);
+            //Address myAddress = await _context.Addresses.FindAsync(id);
 
             if (myUser == null)
             {
                 return BadRequest("user not valid");
             }
 
-            else if (myAddress.AddressUserId != myUser.UserId)
+            else if (address.AddressUserId != myUser.UserId)
             {
                 return Unauthorized("you are not allowed to update this address");
             }
 
-            myAddress.AddressCity = address.AddressCity;
-            myAddress.AddressCounty = address.AddressCounty;
-            myAddress.AddressHome = address.AddressHome;
-            myAddress.AddressPostalCode = address.AddressPostalCode;
-            myAddress.AddressState = address.AddressState;
+            _context.Entry(address).State = EntityState.Modified;
 
-            await _context.SaveChangesAsync();
-            return Ok("addres updated");
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (AddressExists(id) == false)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return Ok("address updated");
         }
 
 
@@ -109,8 +125,9 @@ namespace ShopAPISourceCode.Controllers
 
             if (myUser == null)
                 return BadRequest("user not valid");
+            if (address.AddressUserId != myUser.UserId)
+                return BadRequest("bad user id");
 
-            address.AddressUserId = myUser.UserId;
             await _context.Addresses.AddAsync(address);
             await _context.SaveChangesAsync();
 
@@ -137,7 +154,7 @@ namespace ShopAPISourceCode.Controllers
             _context.Addresses.Remove(myAddress);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok("address deleted");
         }
 
         private bool AddressExists(int id)

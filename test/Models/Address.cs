@@ -22,7 +22,7 @@ namespace ShopAPISourceCode.Models
 
         public string AddressHome { get; set; }
 
-        public int AddressPostalCode { set; get; }
+        public double AddressPostalCode { set; get; }
 
 
         [ForeignKey(nameof(User))]

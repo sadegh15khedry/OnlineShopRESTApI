@@ -54,35 +54,6 @@ namespace test.Controllers
             }
         }
 
-        // POST api/<UsersController1>/register
-        [HttpPost("[action]")]
-        public async Task<IActionResult> RegisterUser([FromForm] User user)
-        {
-            //ckecking email and username to see if already exists
-            var userWithSameEmail = await _context.Users.Where(u => u.UserEmail == user.UserEmail).FirstOrDefaultAsync();
-            if (userWithSameEmail != null)
-            {
-                return BadRequest("user with this email already exists");
-            }
-
-            var newUser = new User
-            {
-                UserFirstName = user.UserFirstName,
-                UserLastName = user.UserLastName,
-                UserEmail = user.UserEmail,
-                UserPassword = SecurePasswordHasherHelper.Hash(user.UserPassword),
-                UserPhone = user.UserPhone,
-                ImageUrl = "/img\\default_profile_pic.jpg",
-                UserRole = "user"
-
-            };
-
-
-            _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
-            return StatusCode(201, "user created");
-        }
-
 
 
         // POST api/<UsersController1>/login
@@ -186,29 +157,29 @@ namespace test.Controllers
             }
 
             int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
-            var userEntity = await _context.Users.FindAsync(userId);
+            //var userEntity = await _context.Users.FindAsync(userId);
 
             if (user.UserId != userId)
             {
                 Unauthorized("you are not allowed to update this user");
             }
-            if (userEntity == null)
-            {
-                return NotFound("not found");
-            }
 
+            _context.Entry(user).State = EntityState.Modified;
 
-            if (user.UserFirstName != null)
+            try
             {
-                userEntity.UserFirstName = user.UserFirstName;
+                await _context.SaveChangesAsync();
             }
-            if (user.UserLastName != null)
+            catch (DbUpdateConcurrencyException)
             {
-                userEntity.UserLastName = user.UserLastName;
-            }
-            if (user.UserSSN != null)
-            {
-                userEntity.UserSSN = user.UserSSN;
+                if (!(UserExists(id)))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
 
@@ -216,6 +187,23 @@ namespace test.Controllers
             return Ok("updated");
         }
 
+
+        // POST api/<UsersController1>/register
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RegisterUser([FromForm] User user)
+        {
+            //ckecking email and username to see if already exists
+            var userWithSameEmail = await _context.Users.Where(u => u.UserEmail == user.UserEmail).FirstOrDefaultAsync();
+            if (userWithSameEmail != null)
+            {
+                return BadRequest("user with this email already exists");
+            }
+
+            user.ImageUrl = "/img\\default_profile_pic.jpg";
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+        }
 
 
         // DELETE api/<UsersController1>/5
@@ -237,6 +225,10 @@ namespace test.Controllers
         }
 
 
+        private bool UserExists(int id)
+        {
+            return _context.Users.Any(e => e.UserId == id);
+        }
         //public static string SubjectId(this ClaimsPrincipal user) { return user?.Claims?.FirstOrDefault(c => c.Type.Equals("sub", StringComparison.OrdinalIgnoreCase))?.Value; }
 
     }

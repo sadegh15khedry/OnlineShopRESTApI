@@ -49,24 +49,32 @@ namespace ShopAPISourceCode.Controllers
         {
             var myProduct = await _context.Products.FindAsync(id);
 
-            //ckecking if product exists
             if (myProduct == null)
                 return NotFound("not found");
 
-            //updating the product
-            if (product.ProductDescription != null)
-                myProduct.ProductDescription = product.ProductDescription;
+            if (id != product.ProductId)
+            {
+                return BadRequest();
+            }
 
-            if (product.ProductTitle != null)
-                myProduct.ProductTitle = product.ProductTitle;
+            _context.Entry(product).State = EntityState.Modified;
 
-            if (product.ProductBrand != null)
-                myProduct.ProductBrand = product.ProductBrand;
-
-            if (product.ProductAnalysis != null)
-                myProduct.ProductAnalysis = product.ProductAnalysis;
-
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(id))
+                {
+                    return NotFound("product not found");
+                }
+                else
+                {
+                    throw;
+                }
+            }
+          
             return Ok("updated");
         }
 
