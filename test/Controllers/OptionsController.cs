@@ -1,7 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ShopAPISourceCode.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using test.Data;
+using test.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,112 +16,116 @@ namespace ShopAPISourceCode.Controllers
     [ApiController]
     public class OptionsController : ControllerBase
     {
-        private ShopDbContext _dbCotext;
+        private ShopDbContext _context;
 
-        public OptionsController(ShopDbContext dbCotext)
+        public OptionsController(ShopDbContext context)
         {
-            _dbCotext = dbCotext;
+            _context = context;
         }
 
         // GET: api/<OptionsController>
         [HttpGet]
-        public IActionResult Get()
+        public async Task<ActionResult<IEnumerable<Option>>> GetOptions()
         {
-            return Ok(_dbCotext.Options);
+            return await _context.Options.ToListAsync();
         }
 
         // GET api/<OptionsController>/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<ActionResult<IEnumerable<Option>>> GetOption(int id)
         {
-            var myOption = _dbCotext.Options.Find(id);
-            if (myOption == null)
+            var option = await _context.Options.FindAsync(id);
+            if (option == null)
                 return NotFound("option not found");
-            return Ok(myOption);
+
+            return Ok(option);
         }
+
+
+        [HttpGet("[action]/{productId}")]
+        public async Task<ActionResult<IEnumerable<Option>>> GetOptionByProduct(int productId)
+        {
+            var option = await _context.Options.Where(s => s.OptionProductId == productId).ToListAsync();
+            if (option == null)
+                return NotFound("option not found");
+
+            return Ok(option);
+        }
+
+
+
+
+        // PUT api/<OptionsController>/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutOption(int id, [FromForm] Option option)
+        {
+
+            if (id != option.OptionId)
+            {
+                return BadRequest();
+            }
+            _context.Entry(option).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OptionExists(id))
+                {
+                    return NotFound("product not found");
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok("option updated");
+        }
+
 
         // POST api/<OptionsController>
         [HttpPost]
-        public IActionResult Post([FromForm] int optionProductId, [FromForm] double optionPrice, [FromForm] double optionQuantity,
-            [FromForm] float optionDiscount, [FromForm] string optionDiscountStart, [FromForm] string optionType)
+        public async Task<ActionResult<Option>> PostOption([FromForm] Option option)
         {
 
-            var myProduct = _dbCotext.Products.Find(optionProductId);
+            var myProduct = _context.Products.Find(option.OptionProductId);
             if (myProduct == null)
             {
                 return NotFound("product not found");
             }
             else
             {
-                Option option = new Option
-                {
-                    OptionProductId = myProduct.ProductId,
-                    OptionPrice = optionPrice,
-                    OptionDiscount = optionDiscount,
-                    OptionQuantity = optionQuantity,
-                    OptionType = optionType
-                };
-                _dbCotext.Options.Add(option);
-                _dbCotext.SaveChanges();
-                return Ok("option added");
+                _context.Options.Add(option);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("GetOption", new { id = option.OptionId }, option);
             }
         }
 
-        // PUT api/<OptionsController>/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromForm] string optionPrice, [FromForm] string optionQuantity,
-            [FromForm] string optionDiscount, [FromForm] string optionDiscountStart,
-            [FromForm] string optionDiscountEnd, [FromForm] string optionType)
-        {
-            var myOption = _dbCotext.Options.Find(id);
-
-            if (myOption == null)
-            {
-                return NotFound("option not found");
-            }
-
-
-            var isPriceNumeric = double.TryParse(optionPrice, out double optionPriceNummber);
-            if (isPriceNumeric == true)
-                myOption.OptionPrice = optionPriceNummber;
-
-            var isDiscountNumeric = float.TryParse(optionDiscount, out float optionDiscountNummber);
-            if (isDiscountNumeric == true)
-                myOption.OptionDiscount = optionDiscountNummber;
-
-            var isQuantityNumeric = double.TryParse(optionQuantity, out double optionQuantityNumber);
-            if (isQuantityNumeric == true)
-                myOption.OptionQuantity = optionQuantityNumber;
-
-            if (optionType != null)
-                myOption.OptionType = optionType;
-
-            var isDiscoutStartValid = DateTime.TryParse(optionDiscountStart, out DateTime optionDiscountStartDateTime);
-            if (isDiscoutStartValid == true)
-                myOption.OptionDiscountStart = optionDiscountStartDateTime;
-
-            var isDiscoutEndValid = DateTime.TryParse(optionDiscountEnd, out DateTime optionDiscountEndDateTime);
-            if (isDiscoutEndValid == true)
-                myOption.OptionDiscountEnd = optionDiscountEndDateTime;
-
-            _dbCotext.SaveChanges();
-            return Ok("option updated");
-        }
 
         //DELETE api/<OptionsController>/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteOption(int id)
         {
-            var myOpton = _dbCotext.Options.Find(id);
+            var myOpton = await _context.Options.FindAsync(id);
 
             if (myOpton == null)
             {
                 return NotFound("option not found");
             }
 
-            _dbCotext.Options.Remove(myOpton);
-            _dbCotext.SaveChanges();
+            _context.Options.Remove(myOpton);
+            await _context.SaveChangesAsync();
             return Ok("option deleted");
+        }
+
+
+        private bool OptionExists(int id)
+        {
+            return _context.Options.Any(e => e.OptionId == id);
         }
     }
 

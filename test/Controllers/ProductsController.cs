@@ -28,6 +28,7 @@ namespace ShopAPISourceCode.Controllers
             return await _context.Products.ToListAsync();
         }
 
+
         // GET: api/Products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
@@ -36,7 +37,7 @@ namespace ShopAPISourceCode.Controllers
 
             if (product == null)
             {
-                return NotFound();
+                return NotFound("product not found");
             }
 
             return product;
@@ -47,10 +48,10 @@ namespace ShopAPISourceCode.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduct(int id,[FromForm] Product product)
         {
-            var myProduct = await _context.Products.FindAsync(id);
+            //var myProduct = await _context.Products.FindAsync(id);
 
-            if (myProduct == null)
-                return NotFound("not found");
+            //if (myProduct == null)
+            //    return NotFound("not found");
 
             if (id != product.ProductId)
             {
