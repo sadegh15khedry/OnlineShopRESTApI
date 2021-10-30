@@ -2,16 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using ShopAPISourceCode.Models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using test.Data;
 using test.Models;
 
@@ -35,37 +34,38 @@ namespace test.Controllers
 
         // GET: api/<UsersController1>
         [HttpGet]
-        public IActionResult Get()
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return Ok(_context.Users);
+            return await _context.Users.ToListAsync();
         }
 
         // GET api/<UsersController1>/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<ActionResult<IEnumerable<User>>> GetUser(int id)
         {
-            var myUser = _context.Users.Find(id);
-            if (myUser == null)
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
             {
-                return NotFound();
+                return NotFound("user not found");
             }
             else
             {
-                return Ok(myUser);
+                return Ok(user);
             }
         }
 
         // POST api/<UsersController1>/register
         [HttpPost("[action]")]
-        public IActionResult Register([FromForm] User user)
+        public async Task<IActionResult> RegisterUser([FromForm] User user)
         {
             //ckecking email and username to see if already exists
-            var userWithSameEmail = _context.Users.Where(u => u.UserEmail == user.UserEmail).SingleOrDefault();
+            var userWithSameEmail = await _context.Users.Where(u => u.UserEmail == user.UserEmail).FirstOrDefaultAsync();
             if (userWithSameEmail != null)
             {
                 return BadRequest("user with this email already exists");
             }
-            var userObj = new User
+
+            var newUser = new User
             {
                 UserFirstName = user.UserFirstName,
                 UserLastName = user.UserLastName,
@@ -74,34 +74,36 @@ namespace test.Controllers
                 UserPhone = user.UserPhone,
                 ImageUrl = "/img\\default_profile_pic.jpg",
                 UserRole = "user"
-                
+
             };
-            _context.Users.Add(userObj);
-            _context.SaveChanges();
+
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
             return StatusCode(201, "user created");
-
-
         }
+
+
 
         // POST api/<UsersController1>/login
         [HttpPost("[action]")]
-        public IActionResult Login([FromForm] string userEmail, [FromForm] string userPassword)
+        public async Task<IActionResult> LoginUser([FromForm] string userEmail, [FromForm] string userPassword)
         {
-            var myUser = _context.Users.FirstOrDefault(u => u.UserEmail == userEmail);
+            var myUser = await _context.Users.FirstOrDefaultAsync(u => u.UserEmail == userEmail);
             if (myUser == null)
             {
-                return NotFound();
+                return NotFound("user not found");
             }
-            if (!SecurePasswordHasherHelper.Verify(userPassword, myUser.UserPassword))
+            if (SecurePasswordHasherHelper.Verify(userPassword, myUser.UserPassword) == false)
             {
-                return Unauthorized();
+                return Unauthorized("wrong password");
             }
             var claims = new[]
-{
-            new Claim(JwtRegisteredClaimNames.Email, myUser.UserEmail),
-            new Claim(ClaimTypes.Email, myUser.UserEmail),
-            new Claim(ClaimTypes.Role, myUser.UserRole),
-            new Claim(ClaimTypes.NameIdentifier, myUser.UserId.ToString()),
+            {
+                new Claim(JwtRegisteredClaimNames.Email, myUser.UserEmail),
+                new Claim(ClaimTypes.Email, myUser.UserEmail),
+                new Claim(ClaimTypes.Role, myUser.UserRole),
+                new Claim(ClaimTypes.NameIdentifier, myUser.UserId.ToString()),
             };
 
             var token = _auth.GenerateAccessToken(claims);
@@ -121,10 +123,10 @@ namespace test.Controllers
         // PUT api/<UsersController1>/AddPhoto/5
         [HttpPut("[action]")]
         [Authorize]
-        public IActionResult AddPhoto([FromForm] IFormFile photo)
+        public async Task<IActionResult> AddPhotoUser([FromForm] IFormFile photo)
         {
             int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
-            var myUser = _context.Users.Find(userId);
+            var myUser = await _context.Users.FindAsync(userId);
             if (myUser == null)
             {
                 return NotFound("not found");
@@ -135,9 +137,9 @@ namespace test.Controllers
                 var guid = Guid.NewGuid();
                 var filePath = Path.Combine("wwwroot/img", guid + ".jpg");
                 var fileStream = new FileStream(filePath, FileMode.Create);
-                photo.CopyTo(fileStream);
+                await photo.CopyToAsync(fileStream);
                 myUser.ImageUrl = filePath.Remove(0, 7);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return Ok("updated");
             }
             else
@@ -150,10 +152,11 @@ namespace test.Controllers
         // PUT api/<UsersController1>/RemovePhoto/5
         [HttpPut("[action]")]
         [Authorize]
-        public IActionResult RemovePhoto()
+        public async Task<IActionResult> RemovePhotoUser()
         {
             int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
-            var myUser = _context.Users.Find(userId);
+            var myUser = await _context.Users.FindAsync(userId);
+
             if (myUser == null)
             {
                 return NotFound("not found");
@@ -162,7 +165,7 @@ namespace test.Controllers
             else if (myUser != null)
             {
                 myUser.ImageUrl = "/img\\default_profile_pic.jpg";
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return Ok("updated");
             }
             else
@@ -174,50 +177,61 @@ namespace test.Controllers
 
         // PUT api/<UsersController1>/update/5
         [Authorize]
-        [HttpPut]
-        public IActionResult Update([FromForm] string? userFirstName, [FromForm] string? userLastName,
-            [FromForm] string? userSSN)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromForm] User user)
         {
+            if (user == null)
+            {
+                return BadRequest("user object is null");
+            }
+
             int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString());
-            var myUser = _context.Users.Find(userId);
+            var userEntity = await _context.Users.FindAsync(userId);
 
-            if (myUser == null)
+            if (user.UserId != userId)
             {
-                return NotFound("no found");
+                Unauthorized("you are not allowed to update this user");
+            }
+            if (userEntity == null)
+            {
+                return NotFound("not found");
             }
 
-            if (userFirstName != null)
+
+            if (user.UserFirstName != null)
             {
-                myUser.UserFirstName = userFirstName;
+                userEntity.UserFirstName = user.UserFirstName;
             }
-            if (userLastName != null)
+            if (user.UserLastName != null)
             {
-                myUser.UserLastName = userLastName;
+                userEntity.UserLastName = user.UserLastName;
             }
-            if (userSSN != null)
+            if (user.UserSSN != null)
             {
-                myUser.UserSSN = Int16.Parse(userSSN);
+                userEntity.UserSSN = user.UserSSN;
             }
-            _context.SaveChanges();
+
+
+            await _context.SaveChangesAsync();
             return Ok("updated");
-
-
         }
+
+
 
         // DELETE api/<UsersController1>/5
         [HttpDelete("{id}")]
         [Authorize(Roles = "admin")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            var myUser = _context.Users.Find(id);
+            var myUser = await _context.Users.FindAsync(id);
             if (myUser == null)
             {
-                return NotFound("no found");
+                return NotFound("not found");
             }
             else
             {
                 _context.Users.Remove(myUser);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return Ok("deleted");
             }
         }
