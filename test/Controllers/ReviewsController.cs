@@ -66,35 +66,27 @@ namespace ShopAPISourceCode.Controllers
         [Authorize]
         public async Task<IActionResult> PutReview(int id, [FromForm] Review review)
         {
+            if (id != review.ReviewId)
+            {
+                return BadRequest("not a valid request");
+            }
             var isUserIdValid = Int32.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
-            var myReview = await _context.Reviews.FindAsync(id);
+            //var myReview = await _context.Reviews.FindAsync(id);
             var myUser = await _context.Users.FindAsync(userId);
-            var myProduct = await _context.Products.Where(s => s.ProductId == myReview.ReviewProductId).ToArrayAsync();
+            var product = await _context.Products.Where(s => s.ProductId == review.ReviewProductId).ToArrayAsync();
+            
 
-
-            if (myProduct == null)
+            if (product == null)
             {
                 return NotFound("product not found");
             }
-            else if (myReview.ReviewUserId != myUser.UserId)
+            else if (review.ReviewUserId != myUser.UserId)
             {
-                return BadRequest(review.ReviewUserId);
+                return BadRequest("userid not valid");
             }
 
-            //updating
-            if (review.ReviewTitle != null)
-                myReview.ReviewTitle = review.ReviewTitle;
 
-            if (review.ReviewRating != null)
-                myReview.ReviewRating = review.ReviewRating;
-
-            if (review.ReviewStatus != null)
-                myReview.ReviewStatus = review.ReviewStatus;
-
-            if (review.ReviewContext != null)
-                myReview.ReviewContext = review.ReviewContext;
-
-
+            _context.Entry(review).State = EntityState.Modified;
 
 
             try

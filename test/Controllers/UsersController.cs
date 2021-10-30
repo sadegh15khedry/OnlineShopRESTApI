@@ -56,40 +56,7 @@ namespace test.Controllers
 
 
 
-        // POST api/<UsersController1>/login
-        [HttpPost("[action]")]
-        public async Task<IActionResult> LoginUser([FromForm] string userEmail, [FromForm] string userPassword)
-        {
-            var myUser = await _context.Users.FirstOrDefaultAsync(u => u.UserEmail == userEmail);
-            if (myUser == null)
-            {
-                return NotFound("user not found");
-            }
-            if (SecurePasswordHasherHelper.Verify(userPassword, myUser.UserPassword) == false)
-            {
-                return Unauthorized("wrong password");
-            }
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Email, myUser.UserEmail),
-                new Claim(ClaimTypes.Email, myUser.UserEmail),
-                new Claim(ClaimTypes.Role, myUser.UserRole),
-                new Claim(ClaimTypes.NameIdentifier, myUser.UserId.ToString()),
-            };
-
-            var token = _auth.GenerateAccessToken(claims);
-            return new ObjectResult(new
-            {
-                access_token = token.AccessToken,
-                expires_in = token.ExpiresIn,
-                token_type = token.TokenType,
-                creation_Time = token.ValidFrom,
-                expiration_Time = token.ValidTo,
-                user_id = myUser.UserId,
-                user_role = myUser.UserRole,
-            });
-
-        }
+        
 
         // PUT api/<UsersController1>/AddPhoto/5
         [HttpPut("[action]")]
@@ -200,15 +167,53 @@ namespace test.Controllers
             }
 
             user.ImageUrl = "/img\\default_profile_pic.jpg";
+            user.UserPassword = SecurePasswordHasherHelper.Hash(user.UserPassword);
+            user.UserRole = "user";
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
 
 
+        // POST api/<UsersController1>/login
+        [HttpPost("[action]")]
+        public async Task<IActionResult> LoginUser([FromForm] string userEmail, [FromForm] string userPassword)
+        {
+            var myUser = await _context.Users.FirstOrDefaultAsync(u => u.UserEmail == userEmail);
+            if (myUser == null)
+            {
+                return NotFound("user not found");
+            }
+            if (SecurePasswordHasherHelper.Verify(userPassword, myUser.UserPassword) == false)
+            {
+                return Unauthorized("wrong password");
+            }
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Email, myUser.UserEmail),
+                new Claim(ClaimTypes.Email, myUser.UserEmail),
+                new Claim(ClaimTypes.Role, myUser.UserRole),
+                new Claim(ClaimTypes.NameIdentifier, myUser.UserId.ToString()),
+            };
+
+            var token = _auth.GenerateAccessToken(claims);
+            return new ObjectResult(new
+            {
+                access_token = token.AccessToken,
+                expires_in = token.ExpiresIn,
+                token_type = token.TokenType,
+                creation_Time = token.ValidFrom,
+                expiration_Time = token.ValidTo,
+                user_id = myUser.UserId,
+                user_role = myUser.UserRole,
+            });
+
+        }
+
+
         // DELETE api/<UsersController1>/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var myUser = await _context.Users.FindAsync(id);
