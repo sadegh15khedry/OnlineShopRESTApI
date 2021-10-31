@@ -24,11 +24,10 @@ namespace ShopAPISourceCode.Models
 
         public double AddressPostalCode { set; get; }
 
-
-        [ForeignKey(nameof(User))]
         public int AddressUserId { get; set; }
+        //[InverseProperty(nameof(User.UserAddresses))]
+        //public User AddressUser { get; set; }
 
-        
 
     }
 }

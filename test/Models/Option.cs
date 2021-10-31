@@ -13,7 +13,6 @@ namespace ShopAPISourceCode.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OptionId { get; set; }
 
-        [ForeignKey(nameof(Product))]
         public int OptionProductId { get; set; }
 
         public double OptionPrice { get; set; }
@@ -28,6 +27,5 @@ namespace ShopAPISourceCode.Models
 
         public string OptionType { get; set; }
 
-        public virtual ICollection<Image> OptionImages { get; set; }
     }
 }

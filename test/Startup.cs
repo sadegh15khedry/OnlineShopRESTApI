@@ -1,19 +1,15 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using test.Data;
 using System.Text;
+using System.Text.Json.Serialization;
+using test.Data;
 
 namespace test
 {
@@ -33,10 +29,10 @@ namespace test
             services.AddControllers();
             services.AddDbContext<ShopDbContext>(option => option.UseSqlServer(
                 Configuration.GetConnectionString("LocalConnection")
-                //Configuration.GetConnectionString("DefaultConnection")
+                    //Configuration.GetConnectionString("DefaultConnection")
                     ));
-            
-            
+
+
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

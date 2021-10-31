@@ -29,7 +29,7 @@ namespace test.Models
         public string UserRole { set; get; }
 
         
-        public virtual ICollection<Address> UserAddresses { set; get; }
+        //public virtual ICollection<Address> UserAddresses { set; get; }
 
         public virtual ICollection<Like> UserLikes { get; set; }
 

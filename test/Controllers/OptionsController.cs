@@ -91,13 +91,14 @@ namespace ShopAPISourceCode.Controllers
         public async Task<ActionResult<Option>> PostOption([FromForm] Option option)
         {
 
-            var myProduct = _context.Products.Find(option.OptionProductId);
-            if (myProduct == null)
+            var product = _context.Products.Find(option.OptionProductId);
+            if (product == null)
             {
                 return NotFound("product not found");
             }
             else
             {
+                //option.OptionProduct = product;
                 _context.Options.Add(option);
                 await _context.SaveChangesAsync();
 

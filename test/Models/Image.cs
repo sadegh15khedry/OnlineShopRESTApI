@@ -15,11 +15,8 @@ namespace ShopAPISourceCode.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ImageId { get; set; }
 
-        //[ForeignKey(nameof(User))]
-        //public int ImageProductId { get; set; }
-
-        [ForeignKey(nameof(Option))]
         public int ImageProductOptionId { get; set; }
+
 
         public string ImagesUrl { get; set; }
 

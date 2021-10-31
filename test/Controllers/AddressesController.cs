@@ -115,20 +115,21 @@ namespace ShopAPISourceCode.Controllers
 
 
         // POST: api/Addresses
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<Address>> PostAddress([FromForm] Address address)
         {
             var isUserIdValid = int.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
-            User myUser = await _context.Users.FindAsync(userId);
+            User user = await _context.Users.FindAsync(userId);
 
-            if (myUser == null)
+            if (user == null)
                 return BadRequest("user not valid");
-            if (address.AddressUserId != myUser.UserId)
+            if (address.AddressUserId != user.UserId)
                 return BadRequest("bad user id");
 
-            await _context.Addresses.AddAsync(address);
+            
+            _context.Addresses.Add(address);
+            //await user.UserAddresses.Add(address);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAddress", new { id = address.AddressId }, address);

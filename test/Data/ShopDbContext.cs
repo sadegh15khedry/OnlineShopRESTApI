@@ -36,7 +36,7 @@ namespace test.Data
                .HasMany(x => x.UserNotices)
                .WithOne(y => y.NoticeUser)
                .IsRequired();
-
+               
             modelBuilder.Entity<Product>()
                .HasMany(x => x.ProductLikes)
                .WithOne(x => x.LikeProduct)
@@ -92,6 +92,22 @@ namespace test.Data
                 .WithMany(y => y.ProductCategories)
                 .IsRequired()
                 .HasForeignKey("ProductCategorieProductId");
+
+            modelBuilder.Entity<Address>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(s => s.AddressUserId);
+
+            modelBuilder.Entity<Option>()
+            .HasOne<Product>()
+            .WithMany()
+            .HasForeignKey(s => s.OptionProductId);
+
+            modelBuilder.Entity<Image>()
+            .HasOne<Option>()
+            .WithMany()
+            .HasForeignKey(s => s.ImageProductOptionId);
+
         }
 
 
