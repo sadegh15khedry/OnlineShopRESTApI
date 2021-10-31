@@ -108,7 +108,13 @@ namespace test.Data
             .WithMany()
             .HasForeignKey(s => s.ImageProductOptionId);
 
+            modelBuilder.Entity<Spec>()
+            .HasOne<Product>()
+            .WithMany()
+            .HasForeignKey(s => s.SpecProductId);
         }
+
+        public DbSet<ShopAPISourceCode.Models.Spec> Spec { get; set; }
 
 
 
