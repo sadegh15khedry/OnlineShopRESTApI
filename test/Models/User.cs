@@ -37,9 +37,9 @@ namespace test.Models
 
         public ICollection<Review> Reviews { get; set; }
 
-        public string ImageUrl { get; set; }
+        public string UserImageUrl { get; set; }
 
         [NotMapped]
-        public IFormFile Image { get; set; }
+        public IFormFile UserImage { get; set; }
     }
 }

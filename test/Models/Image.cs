@@ -17,8 +17,7 @@ namespace ShopAPISourceCode.Models
 
         public int ImageProductOptionId { get; set; }
 
-
-        public string ImagesUrl { get; set; }
+        public string ImageUrl { get; set; }
 
         public string ImagesDescription { get; set; }
 

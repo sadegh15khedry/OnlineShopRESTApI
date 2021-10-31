@@ -14,7 +14,6 @@ namespace ShopAPISourceCode.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SpecId { get; set; }
 
-        [ForeignKey(nameof(Product.ProductId))]
         public int SpecProductId { get; set; }
 
         public string SpecKey { get; set; }

@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using ShopAPISourceCode.Models;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ShopAPISourceCode.Models;
 using test.Data;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ShopAPISourceCode.Controllers
 {
@@ -14,95 +15,86 @@ namespace ShopAPISourceCode.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private ShopDbContext _context;
+        private readonly ShopDbContext _context;
 
         public ImagesController(ShopDbContext context)
         {
             _context = context;
         }
 
-
-
-        // GET: api/<ImagesController>
+        // GET: api/Images
         [HttpGet]
-        public IActionResult Get()
+        public async Task<ActionResult<IEnumerable<Image>>> GetImages()
         {
-            return Ok(_context.Images);
+            return await _context.Images.ToListAsync();
         }
 
-        [HttpGet("[action]/{optionId}")]
-        public IActionResult GetOptionImages(int optionId)
+        // GET: api/Images/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Image>> GetImage(int id)
         {
-            var myOption = _context.Options.Find(optionId);
-            
-            if (myOption == null)
-                return NotFound("option not found");
+            var image = await _context.Images.FindAsync(id);
 
-            var myImages = _context.Images.Where(s => s.ImageProductOptionId == optionId);
-            return Ok(myImages);
-
-        }
-            // GET api/<ImagesController>/5
-            [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var myImage = _context.Images.Find(id);
-
-            if (myImage == null)
+            if (image == null)
             {
-                return NotFound("image not found");
+                return NotFound();
             }
-            else
-            {
-                return Ok(myImage);
-            }
+
+            return image;
         }
 
 
-        // POST api/<ImagesController>
+        // POST: api/Images
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public IActionResult Post([FromForm] IFormFile imageImage, [FromForm] string imagesDescription, 
-            [FromForm] string imageProductOptionId)
+        public async Task<ActionResult<Image>> PostImage([FromForm] Image image)
         {
-            var isIdNumeric = Int32.TryParse(imageProductOptionId, out int imageOptionIdNumber);
-            if(isIdNumeric == false)
+           if(image == null)
             {
-                return NotFound("product option not found");
+                return BadRequest("not a valid image");
             }
-            else if(imageImage != null)
+            else if (image != null)
             {
                 var guid = Guid.NewGuid();
                 var filePath = Path.Combine("wwwroot/img", guid + ".jpg");
                 var fileStream = new FileStream(filePath, FileMode.Create);
-                imageImage.CopyTo(fileStream);
-
-                Image myImage = new Image 
-                {
-                    ImagesUrl = filePath.Remove(0, 7)
-                };
-                myImage.ImageProductOptionId = imageOptionIdNumber;
-                myImage.ImagesDescription = imagesDescription;
+                await image.ImageImage.CopyToAsync(fileStream);
                 
-                _context.Images.Add(myImage);
-                _context.SaveChanges();
-                return Ok("image added");
+                image.ImageUrl = filePath.Remove(0, 7);
+                image.ImageImage = null;
+
+                _context.Images.Add(image);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetImage", new { id = image.ImageId }, image);
             }
-            var myOption = _context.Options.Find();
-            return Ok();
+
+            else
+            {
+                return BadRequest("not a valid image");
+            }
+
+            
         }
 
-        // DELETE api/<ImagesController>/5
+        // DELETE: api/Images/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteImage(int id)
         {
-            var myImage = _context.Images.Find(id);
-            if (myImage == null)
+            var image = await _context.Images.FindAsync(id);
+            if (image == null)
             {
-                return NotFound("image not found");
+                return NotFound();
             }
-            _context.Images.Remove(myImage);
-            _context.SaveChanges();
-            return Ok("image deleted");
+
+            _context.Images.Remove(image);
+            await _context.SaveChangesAsync();
+
+            return Ok("removed");
+        }
+
+        private bool ImageExists(int id)
+        {
+            return _context.Images.Any(e => e.ImageId == id);
         }
     }
 }

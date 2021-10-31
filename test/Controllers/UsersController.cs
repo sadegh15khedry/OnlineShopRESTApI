@@ -76,7 +76,7 @@ namespace test.Controllers
                 var filePath = Path.Combine("wwwroot/img", guid + ".jpg");
                 var fileStream = new FileStream(filePath, FileMode.Create);
                 await photo.CopyToAsync(fileStream);
-                myUser.ImageUrl = filePath.Remove(0, 7);
+                myUser.UserImageUrl = filePath.Remove(0, 7);
                 await _context.SaveChangesAsync();
                 return Ok("updated");
             }
@@ -102,7 +102,7 @@ namespace test.Controllers
 
             else if (myUser != null)
             {
-                myUser.ImageUrl = "/img\\default_profile_pic.jpg";
+                myUser.UserImageUrl = "/img\\default_profile_pic.jpg";
                 await _context.SaveChangesAsync();
                 return Ok("updated");
             }
@@ -166,7 +166,7 @@ namespace test.Controllers
                 return BadRequest("user with this email already exists");
             }
 
-            user.ImageUrl = "/img\\default_profile_pic.jpg";
+            user.UserImageUrl = "/img\\default_profile_pic.jpg";
             user.UserPassword = SecurePasswordHasherHelper.Hash(user.UserPassword);
             user.UserRole = "user";
             _context.Users.Add(user);
