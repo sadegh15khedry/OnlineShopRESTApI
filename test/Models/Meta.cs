@@ -12,14 +12,13 @@ namespace ShopAPISourceCode.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int MetaId { get; set; }
 
+        public int MetaProductId { get; set; }
 
-        public Product Product { get; set; }
+        public string MetaKey { get; set; }
 
-        public string Key { get; set; }
-
-        public string Context { get; set; }
+        public string MetaContext { get; set; }
 
     }
 }

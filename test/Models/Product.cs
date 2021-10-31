@@ -33,9 +33,5 @@ namespace test.Models
 
         public virtual ICollection<Review> ProductReviews { get; set; }
 
-        public virtual ICollection<Meta> ProductMetas { get; set; }
-
-        //public virtual ICollection<Spec> ProductSpecs { get; set; }
-
     }
 }

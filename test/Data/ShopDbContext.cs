@@ -112,6 +112,11 @@ namespace test.Data
             .HasOne<Product>()
             .WithMany()
             .HasForeignKey(s => s.SpecProductId);
+
+            modelBuilder.Entity<Meta>()
+            .HasOne<Product>()
+            .WithMany()
+            .HasForeignKey(s => s.MetaProductId);
         }
 
         public DbSet<ShopAPISourceCode.Models.Spec> Spec { get; set; }

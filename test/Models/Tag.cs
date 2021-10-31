@@ -14,8 +14,6 @@ namespace ShopAPISourceCode.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TagId { get; set; }
 
-        public Product TagProducts { get; set; }
-
         public string TagTitle { get; set; }
 
         public string TagMetaTitle { get; set; }
