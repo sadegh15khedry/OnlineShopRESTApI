@@ -22,6 +22,5 @@ namespace ShopAPISourceCode.Models
 
         public string TagContext { get; set; }
 
-
     }
 }

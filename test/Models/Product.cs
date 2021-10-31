@@ -29,7 +29,7 @@ namespace test.Models
 
         public virtual ICollection<Notice> ProductNotices { get; set; }
 
-        public virtual ICollection<Tag> ProductTags { get; set; }
+        //public virtual ICollection<Tag> ProductTags { get; set; }
 
         public virtual ICollection<Review> ProductReviews { get; set; }
 
