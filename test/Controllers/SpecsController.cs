@@ -26,14 +26,14 @@ namespace ShopAPISourceCode.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Spec>>> GetSpec()
         {
-            return await _context.Spec.ToListAsync();
+            return await _context.Specs.ToListAsync();
         }
 
         // GET: api/Specs/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Spec>> GetSpec(int id)
         {
-            var spec = await _context.Spec.FindAsync(id);
+            var spec = await _context.Specs.FindAsync(id);
 
             if (spec == null)
             {
@@ -47,7 +47,7 @@ namespace ShopAPISourceCode.Controllers
         [HttpGet("[action]/{productId}")]
         public async Task<ActionResult<Spec>> GetSpecByProductId(int productId)
         {
-            var specs = await _context.Spec.Where(s => s.SpecProductId == productId).ToListAsync();
+            var specs = await _context.Specs.Where(s => s.SpecProductId == productId).ToListAsync();
 
             if (specs == null)
             {
@@ -85,7 +85,7 @@ namespace ShopAPISourceCode.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok("spec updated");
         }
 
         // POST: api/Specs
@@ -99,7 +99,7 @@ namespace ShopAPISourceCode.Controllers
                 return BadRequest("product not found");
             }
             
-            _context.Spec.Add(spec);
+            _context.Specs.Add(spec);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetSpec", new { id = spec.SpecId }, spec);
@@ -109,13 +109,13 @@ namespace ShopAPISourceCode.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSpec(int id)
         {
-            var spec = await _context.Spec.FindAsync(id);
+            var spec = await _context.Specs.FindAsync(id);
             if (spec == null)
             {
                 return NotFound();
             }
 
-            _context.Spec.Remove(spec);
+            _context.Specs.Remove(spec);
             await _context.SaveChangesAsync();
 
             return Ok("spec deleted");
@@ -123,7 +123,7 @@ namespace ShopAPISourceCode.Controllers
 
         private bool SpecExists(int id)
         {
-            return _context.Spec.Any(e => e.SpecId == id);
+            return _context.Specs.Any(e => e.SpecId == id);
         }
     }
 }
