@@ -23,12 +23,8 @@ namespace ShopAPISourceCode.Models
 
         public string ReviewContext { set; get; }
 
-        [Required]
-        [ForeignKey(nameof(User))]
         public  int ReviewUserId { set; get; }
         
-        [Required]
-        [ForeignKey(nameof(Product))]
         public int ReviewProductId { set; get; }
 
     }
