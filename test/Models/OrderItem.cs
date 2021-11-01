@@ -10,11 +10,9 @@ namespace ShopAPISourceCode.Models
     {
         public int OrderItemId { get; set; }
 
-        public Order OrderItemOrder { get; set; }
+        public int OrderItemOrderId { get; set; }
 
-        public Product OrderItemProduct { get; set; }
-
-        public Option OrderItemProductOption { get; set; }
+        public int OrderItemOptionId { get; set; }
 
         public int OrderItemQuantity { get; set; }
 

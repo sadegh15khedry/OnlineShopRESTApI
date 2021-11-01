@@ -12,8 +12,6 @@ namespace ShopAPISourceCode.Models
 
         public int TransactionOrderId { get; set; }
 
-        public int TransactionUserId { get; set; }
-
         public int TransactionType { get; set; }
 
         public string TransactionStatus { get; set; }

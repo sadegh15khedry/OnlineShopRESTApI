@@ -159,6 +159,45 @@ namespace test.Data
 
 
             modelBuilder.Entity<User>().Ignore(s => s.UserImage);
+
+            modelBuilder.Entity<Transaction>().HasKey(s => s.TransactionId);
+            modelBuilder.Entity<Transaction>()
+            .HasOne<Order>()
+            .WithMany()
+            .HasForeignKey(s => s.TransactionOrderId);
+
+            modelBuilder.Entity<Order>().HasKey(s => s.OrderId);
+            modelBuilder.Entity<Order>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(s => s.OrderUserId);
+
+            modelBuilder.Entity<Cart>().HasKey(s => s.CartId);
+            modelBuilder.Entity<Cart>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(s => s.CartUserId);
+
+            modelBuilder.Entity<CartItem>().HasKey(s => s.CartItemId);
+            modelBuilder.Entity<CartItem>()
+            .HasOne<Cart>()
+            .WithMany()
+            .HasForeignKey(s => s.CartItemCartId);
+            modelBuilder.Entity<CartItem>()
+            .HasOne<Option>()
+            .WithMany()
+            .HasForeignKey(s => s.CartItemOptionId);
+
+
+            modelBuilder.Entity<OrderItem>().HasKey(s => s.OrderItemId);
+            modelBuilder.Entity<OrderItem>()
+            .HasOne<Order>()
+            .WithMany()
+            .HasForeignKey(s => s.OrderItemOrderId);
+            modelBuilder.Entity<OrderItem>()
+            .HasOne<Option>()
+            .WithMany()
+            .HasForeignKey(s => s.OrderItemOptionId);
         }
 
 

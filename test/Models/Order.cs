@@ -12,8 +12,6 @@ namespace ShopAPISourceCode.Models
 
         public int OrderUserId { get; set; }
 
-        //public List<OrderItem> OrderOrderItems { get; set; }
-
         public DateTime OrderCreatedAt { get; set; }
 
         public DateTime OrderUpdatedAt { get; set; }

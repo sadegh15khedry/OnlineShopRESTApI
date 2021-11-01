@@ -10,13 +10,9 @@ namespace ShopAPISourceCode.Models
     {
         public int CartItemId { get; set; }
 
+        public int CartItemCartId { get; set; }
 
-        public Cart CartItemCart { get; set; }
-
-
-        public Product CartItemProduct { get; set; }
-
-        public Option CartItemProductOption { get; set; }
+        public int CartItemOptionId { get; set; }
 
         public DateTime CartItemCreatedAt { get; set; }
 
