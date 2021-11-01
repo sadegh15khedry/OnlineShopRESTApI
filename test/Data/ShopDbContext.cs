@@ -101,6 +101,11 @@ namespace test.Data
             .WithMany()
             .HasForeignKey(s => s.NoticeProductId);
 
+            modelBuilder.Entity<Categorie>()
+            .HasOne<Categorie>()
+            .WithMany()
+            .HasForeignKey(s => s.CategorieParentId)
+            .IsRequired(false);
         }
 
         

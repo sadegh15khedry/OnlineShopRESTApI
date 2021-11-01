@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopAPISourceCode.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using test.Data;
 
 namespace ShopAPISourceCode.Controllers
@@ -42,6 +42,19 @@ namespace ShopAPISourceCode.Controllers
             return categorie;
         }
 
+        // GET: api/Categories1/5
+        [HttpGet("[action]/{parentId}")]
+        public async Task<ActionResult<Categorie>> GetCategoriesByParentId(int parentId)
+        {
+            var categories = await _context.Categories.Where(s => s.CategorieParentId == parentId).ToListAsync();
+
+            if (categories == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(categories);
+        }
 
         // PUT: api/Categories/5
         [HttpPut("{id}")]
@@ -50,6 +63,16 @@ namespace ShopAPISourceCode.Controllers
             if (id != categorie.CategorieId)
             {
                 return BadRequest();
+            }
+            if (categorie.CategorieImage != null)
+            {
+                var guid = Guid.NewGuid();
+                var filePath = Path.Combine("wwwroot/img", guid + ".jpg");
+                var fileStream = new FileStream(filePath, FileMode.Create);
+                await categorie.CategorieImage.CopyToAsync(fileStream);
+
+                categorie.CategorieImageUrl = filePath.Remove(0, 7);
+                categorie.CategorieImage = null;
             }
 
             _context.Entry(categorie).State = EntityState.Modified;
@@ -78,6 +101,25 @@ namespace ShopAPISourceCode.Controllers
         [HttpPost]
         public async Task<ActionResult<Categorie>> PostCategorie([FromForm] Categorie categorie)
         {
+            if (categorie.CategorieImage != null)
+            {
+                var guid = Guid.NewGuid();
+                var filePath = Path.Combine("wwwroot/img", guid + ".jpg");
+                var fileStream = new FileStream(filePath, FileMode.Create);
+                await categorie.CategorieImage.CopyToAsync(fileStream);
+                
+                categorie.CategorieImageUrl = filePath.Remove(0, 7);
+                categorie.CategorieImage = null;
+
+                _context.Categories.Add(categorie);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetCategorie", new { id = categorie.CategorieId }, categorie);
+
+            }
+            else
+            {
+                return BadRequest("not a valid image");
+            }
             _context.Categories.Add(categorie);
             await _context.SaveChangesAsync();
 
@@ -97,7 +139,7 @@ namespace ShopAPISourceCode.Controllers
             _context.Categories.Remove(categorie);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok("categorie deleted");
         }
 
         private bool CategorieExists(int id)
