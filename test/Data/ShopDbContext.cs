@@ -54,11 +54,11 @@ namespace test.Data
             .HasOne<Product>()
             .WithMany()
             .HasForeignKey(s => s.OptionProductId);
-            
 
 
-            modelBuilder.Entity<Image>()
-                .HasKey(s => s.ImageId);
+
+            modelBuilder.Entity<Image>().HasKey(s => s.ImageId);
+            modelBuilder.Entity<Image>().Ignore(s => s.ImageImage);
             modelBuilder.Entity<Image>()
             .HasOne<Option>()
             .WithMany()
@@ -135,8 +135,8 @@ namespace test.Data
             .HasForeignKey(s => s.NoticeProductId);
 
 
-            modelBuilder.Entity<Categorie>()
-                .HasKey(s => s.CategorieId);
+            modelBuilder.Entity<Categorie>().HasKey(s => s.CategorieId);
+            modelBuilder.Entity<Categorie>().Ignore(s => s.CategorieImage);
             modelBuilder.Entity<Categorie>()
             .HasOne<Categorie>()
             .WithMany()
@@ -157,6 +157,8 @@ namespace test.Data
             .HasForeignKey(s => s.CategorieProductProductId)
             .IsRequired(false);
 
+
+            modelBuilder.Entity<User>().Ignore(s => s.UserImage);
         }
 
 

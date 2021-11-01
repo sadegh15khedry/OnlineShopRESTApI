@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using ShopAPISourceCode.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace test.Models
 {
@@ -28,7 +26,6 @@ namespace test.Models
 
         public string UserImageUrl { get; set; }
 
-        [NotMapped]
         public IFormFile UserImage { get; set; }
     }
 }
