@@ -10,8 +10,6 @@ namespace ShopAPISourceCode.Models
 {
     public class Notice
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int NoticeId { set; get; }
 
         public int NoticeUserId { get; set; }

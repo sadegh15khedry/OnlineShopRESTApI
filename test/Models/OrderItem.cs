@@ -10,16 +10,11 @@ namespace ShopAPISourceCode.Models
 {
     public class OrderItem
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderItemId { get; set; }
-
 
         public Order OrderItemOrder { get; set; }
 
-
         public Product OrderItemProduct { get; set; }
-
 
         public Option OrderItemProductOption { get; set; }
 

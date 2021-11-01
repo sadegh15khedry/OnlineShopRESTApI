@@ -11,8 +11,6 @@ namespace ShopAPISourceCode.Models
 {
     public class Categorie
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CategorieId { set; get; }
 
         public string CategorieTitle { set; get; }

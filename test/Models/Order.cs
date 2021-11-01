@@ -10,8 +10,6 @@ namespace ShopAPISourceCode.Models
 {
     public class Order
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderId { get; set; }
 
         public User OrderUser { get; set; }

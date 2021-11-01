@@ -9,8 +9,6 @@ namespace ShopAPISourceCode.Models
 {
     public class Option
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OptionId { get; set; }
 
         public int OptionProductId { get; set; }

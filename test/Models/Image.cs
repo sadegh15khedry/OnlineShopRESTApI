@@ -11,8 +11,6 @@ namespace ShopAPISourceCode.Models
 {
     public class Image
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ImageId { get; set; }
 
         public int ImageProductOptionId { get; set; }

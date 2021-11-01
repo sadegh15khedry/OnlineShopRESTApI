@@ -24,7 +24,7 @@ namespace test.Data
         public DbSet<Like> Likes { set; get; }
         public DbSet<Notice> Notices { set; get; }
         public DbSet<Spec> Specs { get; set; }
-        
+
 
         public ShopDbContext(DbContextOptions<ShopDbContext> options) : base(options)
         {
@@ -33,57 +33,86 @@ namespace test.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<Address>()
+                .HasKey(s => s.AddressId);
             modelBuilder.Entity<Address>()
             .HasOne<User>()
             .WithMany()
             .HasForeignKey(s => s.AddressUserId);
+            
 
+            modelBuilder.Entity<Cart>()
+                .HasKey(s => s.CartId);
+            modelBuilder.Entity<Cart>()
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(s => s.CartUserId);
+
+            modelBuilder.Entity<Option>()
+                .HasKey(s => s.OptionId);
             modelBuilder.Entity<Option>()
             .HasOne<Product>()
             .WithMany()
             .HasForeignKey(s => s.OptionProductId);
+            
 
+
+            modelBuilder.Entity<Image>()
+                .HasKey(s => s.ImageId);
             modelBuilder.Entity<Image>()
             .HasOne<Option>()
             .WithMany()
             .HasForeignKey(s => s.ImageProductOptionId);
+            
 
+
+            modelBuilder.Entity<Spec>()
+                .HasKey(s => s.SpecId);
             modelBuilder.Entity<Spec>()
             .HasOne<Product>()
             .WithMany()
             .HasForeignKey(s => s.SpecProductId);
+            
 
+            modelBuilder.Entity<Meta>()
+                .HasKey(s => s.MetaId);
             modelBuilder.Entity<Meta>()
             .HasOne<Product>()
             .WithMany()
             .HasForeignKey(s => s.MetaProductId);
+            
 
+
+            modelBuilder.Entity<TagProduct>()
+                .HasKey(s => s.TagProductId);
             modelBuilder.Entity<TagProduct>()
             .HasOne<Product>()
             .WithMany()
             .HasForeignKey(s => s.TagProductProductId);
-
             modelBuilder.Entity<TagProduct>()
             .HasOne<Tag>()
             .WithMany()
             .HasForeignKey(s => s.TagProductTagId);
 
+
+            modelBuilder.Entity<Review>()
+                .HasKey(s => s.ReviewId);
             modelBuilder.Entity<Review>()
             .HasOne<User>()
             .WithMany()
             .HasForeignKey(s => s.ReviewUserId);
-
+            modelBuilder.Entity<Review>()
+            .HasOne<Product>()
+            .WithMany()
+            .HasForeignKey(s => s.ReviewProductId);
             modelBuilder.Entity<Review>()
             .HasOne<Product>()
             .WithMany()
             .HasForeignKey(s => s.ReviewProductId);
 
-            modelBuilder.Entity<Review>()
-            .HasOne<Product>()
-            .WithMany()
-            .HasForeignKey(s => s.ReviewProductId);
 
+            modelBuilder.Entity<Like>()
+                .HasKey(s => s.LikeId);
             modelBuilder.Entity<Like>()
             .HasOne<Product>()
             .WithMany()
@@ -93,6 +122,9 @@ namespace test.Data
             .WithMany()
             .HasForeignKey(s => s.LikeUserId);
 
+
+            modelBuilder.Entity<Notice>()
+                .HasKey(s => s.NoticeId);
             modelBuilder.Entity<Notice>()
             .HasOne<User>()
             .WithMany()
@@ -102,18 +134,23 @@ namespace test.Data
             .WithMany()
             .HasForeignKey(s => s.NoticeProductId);
 
+
+            modelBuilder.Entity<Categorie>()
+                .HasKey(s => s.CategorieId);
             modelBuilder.Entity<Categorie>()
             .HasOne<Categorie>()
             .WithMany()
             .HasForeignKey(s => s.CategorieParentId)
             .IsRequired(false);
 
+
+            modelBuilder.Entity<CategorieProduct>()
+                .HasKey(s => s.CategorieProductId);
             modelBuilder.Entity<CategorieProduct>()
             .HasOne<Categorie>()
             .WithMany()
             .HasForeignKey(s => s.CategorieProductCategorieId)
             .IsRequired(false);
-
             modelBuilder.Entity<CategorieProduct>()
             .HasOne<Product>()
             .WithMany()
@@ -122,9 +159,9 @@ namespace test.Data
 
         }
 
-        
 
-        
+
+
 
 
 

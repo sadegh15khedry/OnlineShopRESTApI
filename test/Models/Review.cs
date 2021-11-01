@@ -11,8 +11,6 @@ namespace ShopAPISourceCode.Models
 {
     public class Review
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ReviewId { set; get; }
         
         public string ReviewTitle { set; get; }

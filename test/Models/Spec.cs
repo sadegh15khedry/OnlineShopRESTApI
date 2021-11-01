@@ -10,8 +10,6 @@ namespace ShopAPISourceCode.Models
 {
     public class Spec
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SpecId { get; set; }
 
         public int SpecProductId { get; set; }

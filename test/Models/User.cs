@@ -10,8 +10,6 @@ namespace test.Models
 {
     public class User
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { set; get; }
 
         public string UserFirstName { set; get; }

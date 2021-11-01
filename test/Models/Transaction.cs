@@ -10,15 +10,11 @@ namespace ShopAPISourceCode.Models
 {
     public class Transaction
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TransactionId { get; set; }
 
+        public int TransactionOrderId { get; set; }
 
-        public Order TransactionOrder { get; set; }
-
-
-        public User TransactionUser { get; set; }
+        public int TransactionUserId { get; set; }
 
         public int TransactionType { get; set; }
 

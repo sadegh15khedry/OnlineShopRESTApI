@@ -10,8 +10,6 @@ namespace ShopAPISourceCode.Models
 {
     public class Like
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int LikeId { set; get; }
 
         public int LikeUserId { get; set; }

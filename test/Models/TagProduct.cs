@@ -9,11 +9,8 @@ namespace ShopAPISourceCode.Models
 {
     public class TagProduct
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TagProductId { get; set; }
         public int TagProductProductId { get; set; }
         public int TagProductTagId { get; set; }
-
     }
 }
