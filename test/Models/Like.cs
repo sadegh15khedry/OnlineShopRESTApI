@@ -13,10 +13,10 @@ namespace ShopAPISourceCode.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int LikeId { set; get; }
-        //[Column("LikeUserId")]
-        public virtual User LikeUser { get; set; }
+
+        public int LikeUserId { get; set; }
  
-        public virtual Product LikeProduct { get; set; }
+        public int LikeProductId { get; set; }
 
         public DateTime LikeDateTimeAdded { get; set; }
     }

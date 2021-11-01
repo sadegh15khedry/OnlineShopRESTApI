@@ -14,9 +14,9 @@ namespace ShopAPISourceCode.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int NoticeId { set; get; }
 
-        public virtual User NoticeUser { get; set; }
+        public int NoticeUserId { get; set; }
 
-        public virtual Product NoticeProduct { get; set; }
+        public int NoticeProductId { get; set; }
 
         public DateTime NoticeDateTimeAdded { get; set; }
     

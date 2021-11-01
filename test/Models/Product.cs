@@ -11,10 +11,8 @@ namespace test.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProductId { get; set; }
 
-        [Required]
         public string ProductTitle { get; set; }
 
-        [Required]
         public string ProductBrand { get; set; }
 
         public string ProductDescription { get; set; }
