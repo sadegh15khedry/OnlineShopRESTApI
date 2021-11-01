@@ -17,5 +17,8 @@ namespace ShopAPISourceCode.Models
         public int CategorieProductProductId { get; set; }
 
         public int CategorieProductCategorieId { get; set; }
+
+        public DateTime CategorieProductDateTimeAdded { get; set; }
+
     }
 }

@@ -18,16 +18,5 @@ namespace test.Models
         public string ProductDescription { get; set; }
 
         public string ProductAnalysis { get; set; }
-
-        //public virtual ICollection<Option> ProductOptions { get; set; }
-
-        //public virtual ICollection<ProductCategorie> ProductCategories { get; set; }
-
-        //public virtual ICollection<Like> ProductLikes { get; set; }
-
-        //public virtual ICollection<Notice> ProductNotices { get; set; }
-
-        //public virtual ICollection<Review> ProductReviews { get; set; }
-
     }
 }

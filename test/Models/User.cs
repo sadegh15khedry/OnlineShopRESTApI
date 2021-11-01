@@ -28,15 +28,6 @@ namespace test.Models
 
         public string UserRole { set; get; }
 
-        
-        //public virtual ICollection<Address> UserAddresses { set; get; }
-
-        //public virtual ICollection<Like> UserLikes { get; set; }
-
-        //public virtual ICollection<Notice> UserNotices { get; set; }
-
-        //public ICollection<Review> Reviews { get; set; }
-
         public string UserImageUrl { get; set; }
 
         [NotMapped]

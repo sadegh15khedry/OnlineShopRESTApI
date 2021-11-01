@@ -20,6 +20,7 @@ namespace test.Data
         public DbSet<TagProduct> TagProducts { set; get; }
         public DbSet<Transaction> Transactions { set; get; }
         public DbSet<Categorie> Categories { set; get; }
+        public DbSet<CategorieProduct> CategorieProducts { get; set; }
         public DbSet<Like> Likes { set; get; }
         public DbSet<Notice> Notices { set; get; }
         public DbSet<Spec> Specs { get; set; }
@@ -106,6 +107,19 @@ namespace test.Data
             .WithMany()
             .HasForeignKey(s => s.CategorieParentId)
             .IsRequired(false);
+
+            modelBuilder.Entity<CategorieProduct>()
+            .HasOne<Categorie>()
+            .WithMany()
+            .HasForeignKey(s => s.CategorieProductCategorieId)
+            .IsRequired(false);
+
+            modelBuilder.Entity<CategorieProduct>()
+            .HasOne<Product>()
+            .WithMany()
+            .HasForeignKey(s => s.CategorieProductProductId)
+            .IsRequired(false);
+
         }
 
         
