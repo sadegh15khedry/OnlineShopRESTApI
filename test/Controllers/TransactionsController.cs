@@ -45,13 +45,17 @@ namespace ShopAPISourceCode.Controllers
         // PUT: api/Transactions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTransaction(int id, Transaction transaction)
+        public async Task<IActionResult> PutTransaction(int id,[FromForm] Transaction transaction)
         {
             if (id != transaction.TransactionId)
             {
                 return BadRequest();
             }
-
+            var order = await _context.Orders.FindAsync(transaction.TransactionOrderId);
+            if (order == null)
+            {
+                return NotFound("order not found");
+            }
             _context.Entry(transaction).State = EntityState.Modified;
 
             try
@@ -70,14 +74,20 @@ namespace ShopAPISourceCode.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok("transaction updated");
         }
 
         // POST: api/Transactions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Transaction>> PostTransaction(Transaction transaction)
+        public async Task<ActionResult<Transaction>> PostTransaction([FromForm] Transaction transaction)
         {
+            var order = await _context.Orders.FindAsync(transaction.TransactionOrderId);
+            if (order == null)
+            {
+                return NotFound("order not found");
+            }
+
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
 
@@ -97,7 +107,7 @@ namespace ShopAPISourceCode.Controllers
             _context.Transactions.Remove(transaction);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok("transaction deleted");
         }
 
         private bool TransactionExists(int id)
