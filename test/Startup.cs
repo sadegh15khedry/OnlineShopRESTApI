@@ -65,6 +65,7 @@ namespace test
             app.UseAuthentication();
             app.UseAuthorization();
 
+            shopDbContext.Database.EnsureDeleted();
             shopDbContext.Database.EnsureCreated();
 
             app.UseEndpoints(endpoints =>

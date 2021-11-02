@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShopAPISourceCode.Data.Configurations;
 using ShopAPISourceCode.Models;
 using test.Models;
 namespace test.Data
@@ -33,171 +34,45 @@ namespace test.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Address>()
-                .HasKey(s => s.AddressId);
-            modelBuilder.Entity<Address>()
-            .HasOne<User>()
-            .WithMany()
-            .HasForeignKey(s => s.AddressUserId);
+
+            modelBuilder.ApplyConfiguration(new AddressConfiguration());
+
+            modelBuilder.ApplyConfiguration(new CartConfiguration());
+
+            modelBuilder.ApplyConfiguration(new CartItemConfiguration());
+
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+
+            modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
+
+            modelBuilder.ApplyConfiguration(new OptionConfiguration());
+
+            modelBuilder.ApplyConfiguration(new ImageConfiguration());
+
+            modelBuilder.ApplyConfiguration(new SpecConfiguration());
+
+            modelBuilder.ApplyConfiguration(new MetaConfiguration());
+
+            modelBuilder.ApplyConfiguration(new TagConfiguration());
+
+            modelBuilder.ApplyConfiguration(new TagProductConfiguration());
+
+            modelBuilder.ApplyConfiguration(new ReviewConfiguration());
+
+            modelBuilder.ApplyConfiguration(new LikeConfiguration());
+
+            modelBuilder.ApplyConfiguration(new NoticeConfiguration());
+
+            modelBuilder.ApplyConfiguration(new CategorieConfiguration());
+
+            modelBuilder.ApplyConfiguration(new CategorieProductConfiguration());
+
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+
+            modelBuilder.ApplyConfiguration(new TransactionConfiguration());
+
+
             
-
-            modelBuilder.Entity<Cart>()
-                .HasKey(s => s.CartId);
-            modelBuilder.Entity<Cart>()
-                .HasOne<User>()
-                .WithMany()
-                .HasForeignKey(s => s.CartUserId);
-
-            modelBuilder.Entity<Option>()
-                .HasKey(s => s.OptionId);
-            modelBuilder.Entity<Option>()
-            .HasOne<Product>()
-            .WithMany()
-            .HasForeignKey(s => s.OptionProductId);
-
-
-
-            modelBuilder.Entity<Image>().HasKey(s => s.ImageId);
-            modelBuilder.Entity<Image>().Ignore(s => s.ImageImage);
-            modelBuilder.Entity<Image>()
-            .HasOne<Option>()
-            .WithMany()
-            .HasForeignKey(s => s.ImageProductOptionId);
-            
-
-
-            modelBuilder.Entity<Spec>()
-                .HasKey(s => s.SpecId);
-            modelBuilder.Entity<Spec>()
-            .HasOne<Product>()
-            .WithMany()
-            .HasForeignKey(s => s.SpecProductId);
-            
-
-            modelBuilder.Entity<Meta>()
-                .HasKey(s => s.MetaId);
-            modelBuilder.Entity<Meta>()
-            .HasOne<Product>()
-            .WithMany()
-            .HasForeignKey(s => s.MetaProductId);
-            
-
-
-            modelBuilder.Entity<TagProduct>()
-                .HasKey(s => s.TagProductId);
-            modelBuilder.Entity<TagProduct>()
-            .HasOne<Product>()
-            .WithMany()
-            .HasForeignKey(s => s.TagProductProductId);
-            modelBuilder.Entity<TagProduct>()
-            .HasOne<Tag>()
-            .WithMany()
-            .HasForeignKey(s => s.TagProductTagId);
-
-
-            modelBuilder.Entity<Review>()
-                .HasKey(s => s.ReviewId);
-            modelBuilder.Entity<Review>()
-            .HasOne<User>()
-            .WithMany()
-            .HasForeignKey(s => s.ReviewUserId);
-            modelBuilder.Entity<Review>()
-            .HasOne<Product>()
-            .WithMany()
-            .HasForeignKey(s => s.ReviewProductId);
-            modelBuilder.Entity<Review>()
-            .HasOne<Product>()
-            .WithMany()
-            .HasForeignKey(s => s.ReviewProductId);
-
-
-            modelBuilder.Entity<Like>()
-                .HasKey(s => s.LikeId);
-            modelBuilder.Entity<Like>()
-            .HasOne<Product>()
-            .WithMany()
-            .HasForeignKey(s => s.LikeProductId);
-            modelBuilder.Entity<Like>()
-            .HasOne<User>()
-            .WithMany()
-            .HasForeignKey(s => s.LikeUserId);
-
-
-            modelBuilder.Entity<Notice>()
-                .HasKey(s => s.NoticeId);
-            modelBuilder.Entity<Notice>()
-            .HasOne<User>()
-            .WithMany()
-            .HasForeignKey(s => s.NoticeUserId);
-            modelBuilder.Entity<Notice>()
-            .HasOne<Product>()
-            .WithMany()
-            .HasForeignKey(s => s.NoticeProductId);
-
-
-            modelBuilder.Entity<Categorie>().HasKey(s => s.CategorieId);
-            modelBuilder.Entity<Categorie>().Ignore(s => s.CategorieImage);
-            modelBuilder.Entity<Categorie>()
-            .HasOne<Categorie>()
-            .WithMany()
-            .HasForeignKey(s => s.CategorieParentId)
-            .IsRequired(false);
-
-
-            modelBuilder.Entity<CategorieProduct>()
-                .HasKey(s => s.CategorieProductId);
-            modelBuilder.Entity<CategorieProduct>()
-            .HasOne<Categorie>()
-            .WithMany()
-            .HasForeignKey(s => s.CategorieProductCategorieId)
-            .IsRequired(false);
-            modelBuilder.Entity<CategorieProduct>()
-            .HasOne<Product>()
-            .WithMany()
-            .HasForeignKey(s => s.CategorieProductProductId)
-            .IsRequired(false);
-
-
-            modelBuilder.Entity<User>().Ignore(s => s.UserImage);
-
-            modelBuilder.Entity<Transaction>().HasKey(s => s.TransactionId);
-            modelBuilder.Entity<Transaction>()
-            .HasOne<Order>()
-            .WithMany()
-            .HasForeignKey(s => s.TransactionOrderId);
-
-            modelBuilder.Entity<Order>().HasKey(s => s.OrderId);
-            modelBuilder.Entity<Order>()
-            .HasOne<User>()
-            .WithMany()
-            .HasForeignKey(s => s.OrderUserId);
-
-            modelBuilder.Entity<Cart>().HasKey(s => s.CartId);
-            modelBuilder.Entity<Cart>()
-            .HasOne<User>()
-            .WithMany()
-            .HasForeignKey(s => s.CartUserId);
-
-            modelBuilder.Entity<CartItem>().HasKey(s => s.CartItemId);
-            modelBuilder.Entity<CartItem>()
-            .HasOne<Cart>()
-            .WithMany()
-            .HasForeignKey(s => s.CartItemCartId);
-            modelBuilder.Entity<CartItem>()
-            .HasOne<Option>()
-            .WithMany()
-            .HasForeignKey(s => s.CartItemOptionId);
-
-
-            modelBuilder.Entity<OrderItem>().HasKey(s => s.OrderItemId);
-            modelBuilder.Entity<OrderItem>()
-            .HasOne<Order>()
-            .WithMany()
-            .HasForeignKey(s => s.OrderItemOrderId);
-            modelBuilder.Entity<OrderItem>()
-            .HasOne<Option>()
-            .WithMany()
-            .HasForeignKey(s => s.OrderItemOptionId);
         }
 
 

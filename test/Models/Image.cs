@@ -11,7 +11,7 @@ namespace ShopAPISourceCode.Models
     {
         public int ImageId { get; set; }
 
-        public int ImageProductOptionId { get; set; }
+        public int ImageOptionId { get; set; }
 
         public string ImageUrl { get; set; }
 
