@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -45,9 +47,20 @@ namespace ShopAPISourceCode.Controllers
         // PUT: api/Orders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutOrder(int id,[FromForm] Order order)
         {
             if (id != order.OrderId)
+            {
+                return BadRequest();
+            }
+            var isUserIdValid = int.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            else if (user.UserId != order.OrderUserId)
             {
                 return BadRequest();
             }
@@ -76,8 +89,20 @@ namespace ShopAPISourceCode.Controllers
         // POST: api/Orders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Order>> PostOrder([FromForm] Order order)
         {
+            var isUserIdValid = int.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            else if (user.UserId != order.OrderUserId)
+            {
+                return BadRequest();
+            }
+
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
@@ -86,9 +111,22 @@ namespace ShopAPISourceCode.Controllers
 
         // DELETE: api/Orders/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteOrder(int id)
         {
             var order = await _context.Orders.FindAsync(id);
+            var isUserIdValid = int.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            else if (user.UserId != order.OrderUserId)
+            {
+                return BadRequest();
+            }
+
+            
             if (order == null)
             {
                 return NotFound();
