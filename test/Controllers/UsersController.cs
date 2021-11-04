@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using ShopAPISourceCode.Validators;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -160,11 +161,26 @@ namespace test.Controllers
         public async Task<IActionResult> RegisterUser([FromForm] User user)
         {
             //ckecking email and username to see if already exists
-            var userWithSameEmail = await _context.Users.Where(u => u.UserEmail == user.UserEmail).FirstOrDefaultAsync();
+            /*var userWithSameEmail = await _context.Users.Where(u => u.UserEmail == user.UserEmail).FirstOrDefaultAsync();
             if (userWithSameEmail != null)
             {
                 return BadRequest("user with this email already exists");
+            }*/
+
+            UserValidator validations = new UserValidator();
+            var results = validations.Validate(user);
+            
+            if (results.IsValid == false)
+            {
+                string validationErrorsMessage = "";
+                foreach (var failure in results.Errors)
+                {
+                    validationErrorsMessage += "Property " + failure.PropertyName 
+                        + " failed validation. Error was: " + failure.ErrorMessage + "\n" ;
+                }
+                return BadRequest(validationErrorsMessage);
             }
+
 
             user.UserImageUrl = "/img\\default_profile_pic.jpg";
             user.UserPassword = SecurePasswordHasherHelper.Hash(user.UserPassword);

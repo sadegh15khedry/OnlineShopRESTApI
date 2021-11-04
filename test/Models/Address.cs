@@ -21,9 +21,6 @@ namespace ShopAPISourceCode.Models
         public double AddressPostalCode { set; get; }
 
         public int AddressUserId { get; set; }
-        //[InverseProperty(nameof(User.UserAddresses))]
-        //public User AddressUser { get; set; }
-
 
     }
 }

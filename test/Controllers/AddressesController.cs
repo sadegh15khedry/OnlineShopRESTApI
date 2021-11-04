@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation.Results;
+using FluentValidation.TestHelper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopAPISourceCode.Models;
+using ShopAPISourceCode.Validation;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -121,13 +124,24 @@ namespace ShopAPISourceCode.Controllers
         {
             var isUserIdValid = int.TryParse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString(), out int userId);
             User user = await _context.Users.FindAsync(userId);
-
+            if (!ModelState.IsValid)
+                return Ok("not valid");
             if (user == null)
                 return BadRequest("user not valid");
             if (address.AddressUserId != user.UserId)
                 return BadRequest("bad user id");
 
-            
+            AddressValidator validations = new AddressValidator();
+            var results = validations.Validate(address);
+            string test= "";
+            if(results.IsValid == false)
+            {
+                foreach (var failure in results.Errors)
+                {
+                   test += "Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage;
+                }
+                return BadRequest(test);
+            }
             _context.Addresses.Add(address);
             //await user.UserAddresses.Add(address);
             await _context.SaveChangesAsync();

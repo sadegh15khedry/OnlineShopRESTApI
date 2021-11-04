@@ -16,6 +16,15 @@
           "lib/netcoreapp2.2/AuthenticationPlugin.dll": {}
         }
       },
+      "FluentValidation/10.3.4": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0/FluentValidation.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/FluentValidation.dll": {}
+        }
+      },
       "Humanizer.Core/2.8.26": {
         "type": "package",
         "compile": {
@@ -2051,6 +2060,24 @@
         "aspnetcore.authentication.plugin.nuspec",
         "lib/netcoreapp2.2/AuthenticationPlugin.dll",
         "lib/netcoreapp2.2/AuthenticationPlugin.xml"
+      ]
+    },
+    "FluentValidation/10.3.4": {
+      "sha512": "hsGRtnhTlCrRbxIOkKp6rCBtkq3UV0i31ckcJtd5j1i99zqLgbQGcbxK0SMU63DIto94f++uIdRpoycu8ySnDQ==",
+      "type": "package",
+      "path": "fluentvalidation/10.3.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fluent-validation-icon.png",
+        "fluentvalidation.10.3.4.nupkg.sha512",
+        "fluentvalidation.nuspec",
+        "lib/net5.0/FluentValidation.dll",
+        "lib/net5.0/FluentValidation.xml",
+        "lib/netstandard2.0/FluentValidation.dll",
+        "lib/netstandard2.0/FluentValidation.xml",
+        "lib/netstandard2.1/FluentValidation.dll",
+        "lib/netstandard2.1/FluentValidation.xml"
       ]
     },
     "Humanizer.Core/2.8.26": {
@@ -7173,6 +7200,7 @@
   "projectFileDependencyGroups": {
     "net5.0": [
       "AspNetCore.Authentication.Plugin >= 1.0.1",
+      "FluentValidation >= 10.3.4",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 5.0.11",
       "Microsoft.EntityFrameworkCore >= 5.0.11",
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.11",
@@ -7230,6 +7258,10 @@
           "AspNetCore.Authentication.Plugin": {
             "target": "Package",
             "version": "[1.0.1, )"
+          },
+          "FluentValidation": {
+            "target": "Package",
+            "version": "[10.3.4, )"
           },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",

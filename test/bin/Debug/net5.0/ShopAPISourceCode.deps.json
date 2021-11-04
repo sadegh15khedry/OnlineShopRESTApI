@@ -34,6 +34,7 @@
       "ShopAPISourceCode/1.0.0": {
         "dependencies": {
           "AspNetCore.Authentication.Plugin": "1.0.1",
+          "FluentValidation": "10.3.4",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.11",
           "Microsoft.EntityFrameworkCore": "5.0.11",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.11",
@@ -342,6 +343,17 @@
         },
         "compile": {
           "lib/netcoreapp2.2/AuthenticationPlugin.dll": {}
+        }
+      },
+      "FluentValidation/10.3.4": {
+        "runtime": {
+          "lib/net5.0/FluentValidation.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "10.3.4.0"
+          }
+        },
+        "compile": {
+          "lib/net5.0/FluentValidation.dll": {}
         }
       },
       "Humanizer.Core/2.8.26": {
@@ -3542,6 +3554,13 @@
       "sha512": "sha512-cSPfOwOz1hhIg+hvi3egoLc2BHUjLi411NuVWK+8P7L2ieDUMjXjx0MwBzO6WLGxC/1ixqZ+2fagPRsUrpCLzQ==",
       "path": "aspnetcore.authentication.plugin/1.0.1",
       "hashPath": "aspnetcore.authentication.plugin.1.0.1.nupkg.sha512"
+    },
+    "FluentValidation/10.3.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hsGRtnhTlCrRbxIOkKp6rCBtkq3UV0i31ckcJtd5j1i99zqLgbQGcbxK0SMU63DIto94f++uIdRpoycu8ySnDQ==",
+      "path": "fluentvalidation/10.3.4",
+      "hashPath": "fluentvalidation.10.3.4.nupkg.sha512"
     },
     "Humanizer.Core/2.8.26": {
       "type": "package",

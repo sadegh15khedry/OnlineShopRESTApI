@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Uh3mdiEM8YtOygeOaHAUPv1she8du6ktM+RnC0p3eEhLjgn7/KCqietZGu4Yd+5iLftbxqfuRubuyfqaencYyA==",
+  "dgSpecHash": "itLRvnkTKBChlREMhCobEW4+U0y2cBjladxsF7bcKT6bfuB485G84OXhryfnsXUPCnFcm3YD8FUFgkY80CbJ4w==",
   "success": true,
   "projectFilePath": "C:\\Users\\sadeg\\source\\repos\\ShopAPI\\test\\ShopAPISourceCode.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sadeg\\.nuget\\packages\\aspnetcore.authentication.plugin\\1.0.1\\aspnetcore.authentication.plugin.1.0.1.nupkg.sha512",
+    "C:\\Users\\sadeg\\.nuget\\packages\\fluentvalidation\\10.3.4\\fluentvalidation.10.3.4.nupkg.sha512",
     "C:\\Users\\sadeg\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\sadeg\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.11\\microsoft.aspnetcore.authentication.jwtbearer.5.0.11.nupkg.sha512",
     "C:\\Users\\sadeg\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
