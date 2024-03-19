@@ -1,2 +1,2 @@
 # OnlineShopRESTApI
-my shop api
+A .NET API project.
