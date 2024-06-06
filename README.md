@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Online Shop REST API project marks the beginning of your journey in building backend services. This project provides a backend RESTful API for an online shopping application. It demonstrates how to design and implement RESTful APIs using .NET, Entity Framework Core, SQL Server, and Fluent Validation. It includes endpoints for managing products, users, orders, and authentication.
+The Online Shop REST API project marks the beginning of my journey in building backend services. This project provides a backend RESTful API for an online shopping application. It demonstrates how to design and implement RESTful APIs using .NET, Entity Framework Core, SQL Server, and Fluent Validation. It includes endpoints for managing products, users, orders, and authentication.
 
 ## Table of Contents
 
